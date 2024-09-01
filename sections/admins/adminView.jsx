@@ -16,7 +16,11 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputAdornment from '@mui/material/InputAdornment';
-
+import { LiaEdit } from "react-icons/lia";
+import { MdOutlineDelete } from "react-icons/md";
+import DeleteAdminModal from '@/app/component/DeleteAdminModal';
+import EditAdminModal from '@/app/component/EditAdminModal';
+import CreateAdminModal from '@/app/component/CreateAdminModal';
 
 const adminView = () => {
 
@@ -33,7 +37,36 @@ const adminView = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    //delete
+    const handledeleteModal = () => {
+        handleClose();
+        setOpenModal(true);
+    };
 
+    const handleModalClose = () => {
+        setOpenModal(false);
+    };
+
+    //edit
+    const [openEditModal, setOpenEditModal] = useState(false)
+
+    const handleEditModal = () => {
+        handleClose();
+        setOpenEditModal(true)
+    }
+    
+    const handleEditModalClose = () => {
+        setOpenEditModal(false)
+    };
+    //create
+    const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
+    const handleCreateOpenModal = () => {
+        setIsModalCreateOpen(true);
+    };
+    
+    const handleCloseCreateModal = () => {
+        setIsModalCreateOpen(false);
+    };
 
     return (
         <div className='flex flex-col gap-4'>
@@ -134,165 +167,8 @@ const adminView = () => {
                                                     horizontal: 'left',
                                                     }}
                                                 >
-                                                    <MenuItem onClick={handleClose}>Delete</MenuItem>
-                                                    <MenuItem onClick={handleClose}>Edit Student</MenuItem>
-                                                    <MenuItem onClick={handleClose}>View Profile</MenuItem>
-                                                </Menu>
-                                                </div>
-                                                </td>
-                            </tr>
-                            <tr >
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">Ahmed Elsayed ali</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">  Ahmed266</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> 01065423825</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> **********</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium ">
-                                                <div
-                                                className='bg-[#4834D4] text-[#fff] p-4 flex items-center justify-center  rounded-md '
-                                                >
-                                                    Edit
-                                                </div>
-                                            </td>
-                                            <td>
-                                            <div>
-                                            <button onClick={(event) => handleClick(event)}>
-                                                <HiDotsVertical className='w-[22px] h-[22px]' />
-                                            </button>
-                                                <Menu
-                                                    id="demo-positioned-menu"
-                                                    aria-labelledby="demo-positioned-button"
-                                                    anchorEl={anchorEl}
-                                                    open={open}
-                                                    onClose={handleClose}
-                                                    anchorOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'left',
-                                                    }}
-                                                    transformOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'left',
-                                                    }}
-                                                >
-                                                    <MenuItem onClick={handleClose}>Delete</MenuItem>
-                                                    <MenuItem onClick={handleClose}>Edit Student</MenuItem>
-                                                    <MenuItem onClick={handleClose}>View Profile</MenuItem>
-                                                </Menu>
-                                                </div>
-                                                </td>
-                            </tr>
-                            <tr >
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">Ahmed Elsayed ali</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">  Ahmed266</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> 01065423825</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> **********</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium ">
-                                                <div
-                                                className='bg-[#4834D4] text-[#fff] p-4 flex items-center justify-center  rounded-md '
-                                                >
-                                                    Edit
-                                                </div>
-                                            </td>
-                                            <td>
-                                            <div>
-                                            <button onClick={(event) => handleClick(event)}>
-                                                <HiDotsVertical className='w-[22px] h-[22px]' />
-                                            </button>
-                                                <Menu
-                                                    id="demo-positioned-menu"
-                                                    aria-labelledby="demo-positioned-button"
-                                                    anchorEl={anchorEl}
-                                                    open={open}
-                                                    onClose={handleClose}
-                                                    anchorOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'left',
-                                                    }}
-                                                    transformOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'left',
-                                                    }}
-                                                >
-                                                    <MenuItem onClick={handleClose}>Delete</MenuItem>
-                                                    <MenuItem onClick={handleClose}>Edit Student</MenuItem>
-                                                    <MenuItem onClick={handleClose}>View Profile</MenuItem>
-                                                </Menu>
-                                                </div>
-                                                </td>
-                            </tr>
-                            <tr >
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">Ahmed Elsayed ali</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">  Ahmed266</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> 01065423825</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> **********</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium ">
-                                                <div
-                                                className='bg-[#4834D4] text-[#fff] p-4 flex items-center justify-center  rounded-md '
-                                                >
-                                                    Edit
-                                                </div>
-                                            </td>
-                                            <td>
-                                            <div>
-                                            <button onClick={(event) => handleClick(event)}>
-                                                <HiDotsVertical className='w-[22px] h-[22px]' />
-                                            </button>
-                                                <Menu
-                                                    id="demo-positioned-menu"
-                                                    aria-labelledby="demo-positioned-button"
-                                                    anchorEl={anchorEl}
-                                                    open={open}
-                                                    onClose={handleClose}
-                                                    anchorOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'left',
-                                                    }}
-                                                    transformOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'left',
-                                                    }}
-                                                >
-                                                    <MenuItem onClick={handleClose}>Delete</MenuItem>
-                                                    <MenuItem onClick={handleClose}>Edit Student</MenuItem>
-                                                    <MenuItem onClick={handleClose}>View Profile</MenuItem>
-                                                </Menu>
-                                                </div>
-                                                </td>
-                            </tr>
-                            <tr >
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">Ahmed Elsayed ali</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">  Ahmed266</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> 01065423825</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> **********</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium ">
-                                                <div
-                                                className='bg-[#4834D4] text-[#fff] p-4 flex items-center justify-center  rounded-md '
-                                                >
-                                                    Edit
-                                                </div>
-                                            </td>
-                                            <td>
-                                            <div>
-                                            <button onClick={(event) => handleClick(event)}>
-                                                <HiDotsVertical className='w-[22px] h-[22px]' />
-                                            </button>
-                                                <Menu
-                                                    id="demo-positioned-menu"
-                                                    aria-labelledby="demo-positioned-button"
-                                                    anchorEl={anchorEl}
-                                                    open={open}
-                                                    onClose={handleClose}
-                                                    anchorOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'left',
-                                                    }}
-                                                    transformOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'left',
-                                                    }}
-                                                >
-                                                    <MenuItem onClick={handleClose}>Delete</MenuItem>
-                                                    <MenuItem onClick={handleClose}>Edit Student</MenuItem>
-                                                    <MenuItem onClick={handleClose}>View Profile</MenuItem>
+                                                    <MenuItem onClick={handleEditModal}><span className='text-[#B3B3B7] flex items-center gap-2'> <LiaEdit/> Edit Student</span></MenuItem>
+                                                    <MenuItem  onClick={handledeleteModal}><span className='text-[#FF5B5B] flex items-center gap-2'><MdOutlineDelete/>Delete</span></MenuItem>
                                                 </Menu>
                                                 </div>
                                                 </td>
@@ -305,6 +181,21 @@ const adminView = () => {
                     </div>
                 </div>
     
+<DeleteAdminModal
+    openModal={openModal}
+    handleModalClose={handleModalClose}
+/>
+
+<EditAdminModal
+ openModal={openEditModal}
+ handleModalClose={handleEditModalClose}
+/>
+
+<CreateAdminModal
+   isModalCreateOpen={isModalCreateOpen}
+   handleCloseCreateModal={handleCloseCreateModal}
+/>
+
 </div>
     )
 }

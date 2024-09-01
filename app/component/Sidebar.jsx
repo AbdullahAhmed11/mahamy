@@ -16,7 +16,7 @@ const Sidebar = () => {
         {
             icon: <MdDashboard className=' text-[#B3B3B7] w-[22px] h-[22px]' />,
             title: "Dashboard",
-            href: "#",
+            href: "/",
         },
         {
             icon: <HiUserGroup className='text-[#B3B3B7] w-[22px] h-[22px]  ' />,
@@ -25,23 +25,13 @@ const Sidebar = () => {
         },
         {
             icon: <FaPersonShelter className='text-[#B3B3B7] w-[22px] h-[22px]  ' />,
-            title: "Instructors",
-            href: "/instructors",
+            title: "Admins",
+            href: "/admin",
         },
         {
             icon: <BsYoutube className='text-[#B3B3B7] w-[22px] h-[22px]  ' />,
             title: "Courses",
             href: "/courses",
-        },
-        {
-            icon: <BsFillChatSquareTextFill className='text-[#B3B3B7] w-[22px] h-[22px]  ' />,
-            title: "Chat",
-            href: "#",
-        },
-        {
-            icon: <PiCurrencyDollarSimpleFill className='text-[#B3B3B7] w-[22px] h-[22px]  ' />,
-            title: "Course Orders",
-            href: "/course-order",
         },
         {
             icon: <BsCheckSquareFill className='text-[#B3B3B7] w-[22px] h-[22px]  ' />,
