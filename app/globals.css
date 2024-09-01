@@ -31,3 +31,9 @@ body {
     text-wrap: balance;
   }
 } */
+
+/* Add this to your global CSS or a module CSS file */
+.custom-toast-error {
+  background-color: #ED2121 !important; /* Set the background color to red */
+  color: white !important; /* Set the text color to white for contrast */
+}
