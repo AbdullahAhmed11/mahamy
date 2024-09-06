@@ -62,19 +62,13 @@ const CreateAdminModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
 
         try {
             const response = await createAdmin(adminData);
-            toast.success("admin created successfully!");
 
             console.log('Admin created:', response);
-            toast.success('Admin created successfully!');
             handleCloseCreateModal(); // Close the modal on success
         } catch (error) {
             console.error('Error creating admin:', error);
-            toast.error("Failed to create admin.", {
-                className: 'custom-toast-error', // Apply the custom class here
-            });        
-        } finally {
-            setIsCreating(false);
-        }
+                 
+        } 
     };
 
     return (
@@ -267,7 +261,6 @@ const CreateAdminModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
                     </div>
                 </Box>
             </Modal>
-
         </>
     )
 }

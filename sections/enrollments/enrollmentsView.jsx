@@ -31,9 +31,7 @@ const EnrollmentsView = ({allEnroll}) => {
 
     useEffect(() => {
         const filtered = allEnroll.filter(enroll => {
-            const matchesSearchQuery = enroll.courseName.toLowerCase().includes(searchQuery.toLowerCase()) || 
-            enroll.subjectCourseName.toLowerCase().includes(searchQuery.toLowerCase())
-            
+            const matchesSearchQuery = enroll.courseName?.toLowerCase().includes(searchQuery.toLowerCase())             
             return matchesSearchQuery
         })
         setFilteredEnroll(filtered)
