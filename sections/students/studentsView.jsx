@@ -103,6 +103,34 @@ const studentsView = ({students}) => {
         }
     };
 
+    //slecter
+    const [UnversityId, setUnversityId] = useState('')
+    const [CollageId, setCollageId] = useState('')
+    const [ClassId, setClassId] = useState('')
+
+
+    const [UniversityList, setUniversityList] = useState([]);
+    const [CollageList, setCollageList] = useState([]);
+    const [ClassList, setClassList] = useState([]);
+
+    useEffect(() => {
+        // Fetch the data from the API when the component mounts
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('https://mobisite201.somee.com/api/Student/Select/Unversity/Collage/Class');
+                console.log(response)
+                setUniversityList(response.data.unversityList);
+                setCollageList(response.data.collageList);
+                setClassList(response.data.classList);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
     //search and filter 
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredStudents, setFilteredStudents] = useState(students);
@@ -232,7 +260,7 @@ const studentsView = ({students}) => {
                             >
                                 <MenuItem value="all">All</MenuItem>
                                 <MenuItem value="Cairo University">Cairo University</MenuItem>
-                                <MenuItem value="Ain Shams University">Ain Shams University</MenuItem>
+                                <MenuItem value="Mansoura University">Mansoura University</MenuItem>
                                 {/* Add more universities as needed */}
                             </Select>
                         </FormControl>
@@ -348,12 +376,10 @@ const studentsView = ({students}) => {
                                                 </div>
                                                 </td>
                             </tr>
-
                             ))
                          }
                         </tbody>
                     </table>
-                       
                     <div>
                     </div>
                 </div>
@@ -373,10 +399,10 @@ const studentsView = ({students}) => {
           handleModalClose={handleEditModalClose}
           selectedStudent={selectedStudentId}
     />
-    <AddToStudentModal
+    {/* <AddToStudentModal
     openModal={openAddStudentTo}
     handleModalClose={handleAddStudentModalClose}
-    />
+    /> */}
     <StudentProfile
      toggleDrawer={toggleDrawer}
      openDrawer={openDrawer}

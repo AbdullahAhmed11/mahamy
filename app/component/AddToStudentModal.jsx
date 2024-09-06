@@ -2,10 +2,60 @@ import React, { useState } from 'react'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
+import { TextField, IconButton, InputAdornment } from '@mui/material';
+import { IoIosSearch } from "react-icons/io";
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+const AddToStudentModal = ({openModal, handleModalClose, selectedCourseId}) => {
+    const [isAdding, setisAddeing] = useState(false);
 
-const AddToStudentModal = ({openModal, handleModalClose}) => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [studentID, setStudentID] = useState(null);
+    console.log(selectedCourseId, "id")
+    const handleSearch = async () => {
+        try {
+            const body = {
+                studentName: searchTerm // Send the search term to the API
+            };
+
+            const response = await axios.post("https://mobisite201.somee.com/api/Student/Select/All/Student/1/40", body, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+         console.log(response.data.students[0].studentId, "res")
+         setStudentID(response.data.students[0].studentId)
+        } catch (error) {
+            console.error("Error fetching student:", error);
+        }
+    };
+
+    const handleConfirm = async () => {
+        if (studentID && selectedCourseId) {
+            setisAddeing(true);
+            try {
+                const result = await insertStudentToCourse(studentID, selectedCourseId);
+                toast.success("Student Added successfully!");
+
+                console.log("Student successfully added to course:", result);
+                handleModalClose(); // Close the modal after successful operation
+            } catch (error) {
+                toast.error("Failed to Student Added.", {
+                    className: 'custom-toast-error', // Apply the custom class here
+                });
+                console.error("Error adding student to course:", error);
+            } finally {
+                setisAddeing(false);
+            }
+        } else {
+            console.error("Student ID or Course ID is missing.");
+        }
+    };
+
   return (
+    <>
     <Modal
     open={openModal}
     onClose={handleModalClose}
@@ -31,14 +81,22 @@ const AddToStudentModal = ({openModal, handleModalClose}) => {
         </div>
         <form className='flex flex-col gap-10 mt-6' >
             <div>
-                <TextField
-                    type="text"
-                    variant="standard"
-                    sx={{
-                        width: "100%"
-                    }}
-                    placeholder='Student Name'
-                />
+          <TextField
+                label="Search Student"
+                fullWidth
+                variant="outlined"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <IconButton onClick={handleSearch}>
+                                <IoIosSearch />
+                            </IconButton>
+                        </InputAdornment>
+                    ),
+                }}
+            />
             </div>
             <div>
                 <TextField
@@ -67,6 +125,8 @@ const AddToStudentModal = ({openModal, handleModalClose}) => {
                     Cancel 
                 </Button>
                 <Button
+                 onClick={handleConfirm} 
+                 disabled={isAdding}
                     type="submit"
                     sx={{
                         width: "150px",
@@ -76,12 +136,15 @@ const AddToStudentModal = ({openModal, handleModalClose}) => {
                         color: "#fff",
                     }}
                 >
-                    Confirm 
+            {isAdding ? "Confirming..." : "confirm"}
+ 
                 </Button>
             </div>
         </form>
     </Box>
 </Modal>
+<ToastContainer />
+    </>
   )
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -7,6 +7,9 @@ import TextField from '@mui/material/TextField';
 import { createStudent } from '@/actions/students';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import axios from 'axios';
 const CreateStudentModal = ({isModalCreateOpen, handleCloseCreateModal}) => {
     const [isCreating, setIsCreating] = useState(false)
     const [StudentName, setStudentName] = useState('')
@@ -14,9 +17,33 @@ const CreateStudentModal = ({isModalCreateOpen, handleCloseCreateModal}) => {
     const [StudentPhone, setStudentPhone] = useState('')
     const [StudentPassword, setStudentPassword] = useState('')
     const [StudentActivation, setStudentActivationd] = useState('')
+
     const [UnversityId, setUnversityId] = useState('')
     const [CollageId, setCollageId] = useState('')
     const [ClassId, setClassId] = useState('')
+
+
+    const [UniversityList, setUniversityList] = useState([]);
+    const [CollageList, setCollageList] = useState([]);
+    const [ClassList, setClassList] = useState([]);
+
+    useEffect(() => {
+        // Fetch the data from the API when the component mounts
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('https://mobisite201.somee.com/api/Student/Select/Unversity/Collage/Class');
+                console.log(response)
+                setUniversityList(response.data.unversityList);
+                setCollageList(response.data.collageList);
+                setClassList(response.data.classList);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
 
 
     const handleSubmit = async (e) => {
@@ -52,6 +79,7 @@ const CreateStudentModal = ({isModalCreateOpen, handleCloseCreateModal}) => {
             setIsCreating(false);
         }
     }
+
 
   return (
     <>
@@ -102,42 +130,54 @@ const CreateStudentModal = ({isModalCreateOpen, handleCloseCreateModal}) => {
                 />
             </div>
             <div>
-                <TextField
-                    type="text"
-                    variant="standard"
-                    sx={{
-                        width: "100%"
-                    }}
-                    placeholder='University'
-                    value={UnversityId}
-                    onChange={(e) => setUnversityId(e.target.value)}   
-                />
+            <Select
+                                            required
+                                            variant="standard"
+                                            sx={{ width: "100%" }}
+                                            placeholder='University'
+                                            value={UnversityId}
+                                            onChange={(e) => setUnversityId(e.target.value)}
+                                        >
+                                            {UniversityList.map((university) => (
+                                                <MenuItem key={university.unversityId} value={university.unversityId}>
+                                                    {university.unversityName}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
             </div>
 
             <div>
-                <TextField
-                    type="text"
-                    variant="standard"
-                    sx={{
-                        width: "100%"
-                    }}
-                    placeholder='Collage'
-                    value={CollageId}
-                    onChange={(e) => setCollageId(e.target.value)}   
-                />
+            <Select
+                                            required
+                                            variant="standard"
+                                            sx={{ width: "100%" }}
+                                            placeholder='Collage'
+                                            value={CollageId}
+                                            onChange={(e) => setCollageId(e.target.value)}
+                                        >
+                                              {CollageList.map((collage) => (
+                                                <MenuItem key={collage.collageId} value={collage.collageId}>
+                                                    {collage.collageName}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
             </div>
 
             <div>
-                <TextField
-                    type="text"
-                    variant="standard"
-                    sx={{
-                        width: "100%"
-                    }}
-                    placeholder='Class'
-                    value={ClassId}
-                    onChange={(e) => setClassId(e.target.value)}   
-                />
+            <Select
+                                            required
+                                            variant="standard"
+                                            sx={{ width: "100%" }}
+                                            placeholder='Class'
+                                            value={ClassId}
+                                            onChange={(e) => setClassId(e.target.value)}
+                                        >
+                                              {ClassList.map((classItem) => (
+                                                <MenuItem key={classItem.classId} value={classItem.classId}>
+                                                    {classItem.className}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
             </div>
             <div>
                 <TextField
@@ -186,7 +226,7 @@ const CreateStudentModal = ({isModalCreateOpen, handleCloseCreateModal}) => {
         </form>
     </Box>
 </Modal>
- <ToastContainer />
+ {/* <ToastContainer /> */}
  </>
   )
 }

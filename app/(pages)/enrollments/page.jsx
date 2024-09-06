@@ -1,14 +1,14 @@
 import React from 'react'
 import DashboardLayout from '../../component/DashboardLayout';
-import CoursesView from "../../../sections/courses/coursesView"
-import { getAllCourses } from '@/actions/courses';
+import EnrollmentsView from '@/sections/enrollments/enrollmentsView';
+import { ferchEnrollments } from '@/actions/enrollments';
 async function  page()  {
-  const result = await getAllCourses()
+  const result = await ferchEnrollments()
   return (
     <div>
       
       <DashboardLayout>
-        <CoursesView  courses={result}/>
+        <EnrollmentsView  allEnroll={result}/>
       </DashboardLayout>
     </div>
   )
