@@ -36,7 +36,7 @@ const Sidebar = () => {
         {
             icon: <BsCheckSquareFill className='text-[#B3B3B7] w-[22px] h-[22px]  ' />,
             title: "Enrolments",
-            href: "/enrolments",
+            href: "/enrollments",
         },
     ]
     return (
