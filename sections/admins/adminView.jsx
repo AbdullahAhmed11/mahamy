@@ -21,17 +21,20 @@ import { MdOutlineDelete } from "react-icons/md";
 import DeleteAdminModal from '@/app/component/DeleteAdminModal';
 import EditAdminModal from '@/app/component/EditAdminModal';
 import CreateAdminModal from '@/app/component/CreateAdminModal';
+import { createAdmin } from '@/actions/admins';
 
-const adminView = () => {
+const adminView = ({admins}) => {
 
     const [age, setAge] = useState('all');
     const [openModal, setOpenModal] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [selectedAdminId, setSelectedAdminId] = React.useState(null);
 
     const open = Boolean(anchorEl);
 
-    const handleClick = (event) => {
+    const handleClick = (event, adminId) => {
         setAnchorEl(event.currentTarget);
+        setSelectedAdminId(adminId)
     };
 
     const handleClose = () => {
@@ -68,6 +71,23 @@ const adminView = () => {
         setIsModalCreateOpen(false);
     };
 
+    //searcgh 
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filterAdmins, setFilterAdmins] = useState(admins);
+
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+    useEffect(() => {
+        const filtered  = admins.filter(admin => {
+            const matchesSearchQuery = admin.adminName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            admin.adminEmail?.toLowerCase().includes(searchQuery.toLowerCase())
+        return matchesSearchQuery;
+        })                            
+        setFilterAdmins(filtered)
+    },[searchQuery])
+
     return (
         <div className='flex flex-col gap-4'>
          <div className='flex items-center justify-between'>
@@ -99,6 +119,8 @@ const adminView = () => {
     variant="standard"
     sx={{ width: "300px" }}
     placeholder='Search by username, email'
+    value={searchQuery}
+    onChange={handleSearchChange}
     InputProps={{
         startAdornment: (
             <InputAdornment position="start">
@@ -118,7 +140,7 @@ const adminView = () => {
                                     Full Name
                                 </th>
                                 <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
-                                    Admin Name
+                                    Admin Email
                                 </th>
                                 <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 Instructor Phone
@@ -135,44 +157,49 @@ const adminView = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr >
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">Ahmed Elsayed ali</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">  Ahmed266</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> 01065423825</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> **********</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium ">
-                                                <div
-                                                className='bg-[#4834D4] text-[#fff] p-4 flex items-center justify-center  rounded-md '
-                                                >
-                                                    Edit
-                                                </div>
-                                            </td>
-                                            <td>
-                                            <div>
-                                            <button onClick={(event) => handleClick(event)}>
-                                                <HiDotsVertical className='w-[22px] h-[22px]' />
-                                            </button>
-                                                <Menu
-                                                    id="demo-positioned-menu"
-                                                    aria-labelledby="demo-positioned-button"
-                                                    anchorEl={anchorEl}
-                                                    open={open}
-                                                    onClose={handleClose}
-                                                    anchorOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'left',
-                                                    }}
-                                                    transformOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'left',
-                                                    }}
-                                                >
-                                                    <MenuItem onClick={handleEditModal}><span className='text-[#B3B3B7] flex items-center gap-2'> <LiaEdit/> Edit Student</span></MenuItem>
-                                                    <MenuItem  onClick={handledeleteModal}><span className='text-[#FF5B5B] flex items-center gap-2'><MdOutlineDelete/>Delete</span></MenuItem>
-                                                </Menu>
-                                                </div>
-                                                </td>
-                            </tr>
+                            {
+                                filterAdmins.map((admin) => (
+                                    <tr key={admin.adminId}>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">{admin.adminName}</td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {admin.adminEmail}</td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {admin.adminPhone}</td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {admin.adminPassword} </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium ">
+                                                        <div
+                                                        className='bg-[#4834D4] text-[#fff] p-4 flex items-center justify-center  rounded-md '
+                                                        >
+                                                            Edit
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                    <div>
+                                                    <button onClick={(event) => handleClick(event, admin)}>
+                                                        <HiDotsVertical className='w-[22px] h-[22px]' />
+                                                    </button>
+                                                        <Menu
+                                                            id="demo-positioned-menu"
+                                                            aria-labelledby="demo-positioned-button"
+                                                            anchorEl={anchorEl}
+                                                            open={open}
+                                                            onClose={handleClose}
+                                                            anchorOrigin={{
+                                                            vertical: 'top',
+                                                            horizontal: 'left',
+                                                            }}
+                                                            transformOrigin={{
+                                                            vertical: 'top',
+                                                            horizontal: 'left',
+                                                            }}
+                                                        >
+                                                            <MenuItem onClick={handleEditModal}><span className='text-[#B3B3B7] flex items-center gap-2'> <LiaEdit/> Edit Student</span></MenuItem>
+                                                            <MenuItem  onClick={handledeleteModal}><span className='text-[#FF5B5B] flex items-center gap-2'><MdOutlineDelete/>Delete</span></MenuItem>
+                                                        </Menu>
+                                                        </div>
+                                                        </td>
+                                    </tr>
+
+                                ))
+                            }
                         
                         </tbody>
                     </table>
@@ -184,16 +211,20 @@ const adminView = () => {
 <DeleteAdminModal
     openModal={openModal}
     handleModalClose={handleModalClose}
+    selectedAdmin={selectedAdminId}
 />
 
 <EditAdminModal
  openModal={openEditModal}
  handleModalClose={handleEditModalClose}
+ admin={selectedAdminId}
+
 />
 
 <CreateAdminModal
    isModalCreateOpen={isModalCreateOpen}
    handleCloseCreateModal={handleCloseCreateModal}
+   
 />
 
 </div>

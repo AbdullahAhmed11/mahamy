@@ -92,7 +92,7 @@ const DeleteModal = ({ openModal, handleModalClose, selectedStudent }) => {
                     </div>
                 </Box>
             </Modal>
-            <ToastContainer />
+         
         </>
     );
 }

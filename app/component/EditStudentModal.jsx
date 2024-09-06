@@ -196,7 +196,7 @@ const EditStudentModal = ({openModal, handleModalClose, selectedStudent}) => {
         </form>
     </Box>
 </Modal>
-<ToastContainer/>
+{/* <ToastContainer/> */}
 </>
   )
 }

@@ -3,33 +3,30 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { deleteAdmin } from '@/actions/admins';
+import { deleteCourse } from '@/actions/courses';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+const DeleteCourseModal = ({openModal, handleModalClose, selectedCourseId}) => {
 
-const DeleteAdminModal = ({openModal, handleModalClose, selectedAdmin}) => {
     const [isDeleting, setIsDeleting] = useState(false);
 
-
     const handleDelete = async () => {
-        if (selectedAdmin?.adminId) {
-            setIsDeleting(true);
+        if (selectedCourseId) {
             try {
-                await deleteAdmin(selectedAdmin?.adminId);
-                toast.success("admin deleted successfully!");
+                await deleteCourse(selectedCourseId);
+                toast.success("course deleted successfully!");
 
                 handleModalClose();
             } catch (error) {
-                console.error('Failed to delete admin or revalidate:', error);
-                toast.error("Failed to delete admin.", {
+                toast.error("Failed to delete course.", {
                     className: 'custom-toast-error', // Apply the custom class here
                 });
-            } finally {
+                console.error('Failed to delete course or revalidate:', error);
+            }finally {
                 setIsDeleting(false);
             }
         }
     };
-
 
   return (
     <>
@@ -53,7 +50,7 @@ const DeleteAdminModal = ({openModal, handleModalClose, selectedAdmin}) => {
         }}
     >
         <div className='flex flex-col gap-5 items-center justify-center'>
-            <h2 className='font-bold text-[30px] text-[#000]'> Admin Delete</h2>
+            <h2 className='font-bold text-[30px] text-[#000]'> Course Delete</h2>
             <p className='text-[20px] text-[#8C959F]'>Are you sure deleting this account</p>
         </div>
        
@@ -70,12 +67,11 @@ const DeleteAdminModal = ({openModal, handleModalClose, selectedAdmin}) => {
                         background: "#ED2121",
                         color: "#fff",
                         ":hover": {
-                            background: isDeleting ? "#ccc" : "#ED2121",
+                            background: "#ED2121",
                         },
                     }}
                 >
-                    {isDeleting ? "Deleting..." : "Delete"}
-
+                  {isDeleting ? "Deleting..." : "Delete"}
                 </Button>
             </div>
             <div className='flex items-center justify-center'>
@@ -97,10 +93,11 @@ const DeleteAdminModal = ({openModal, handleModalClose, selectedAdmin}) => {
             </div>
         </div>
     </Box>
-</Modal>
-<ToastContainer />
+    </Modal>
+    <ToastContainer />
     </>
+
   )
 }
 
-export default DeleteAdminModal
+export default DeleteCourseModal
