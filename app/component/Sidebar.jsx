@@ -38,6 +38,11 @@ const Sidebar = () => {
             title: "Enrolments",
             href: "/enrollments",
         },
+        {
+            icon: <BsCheckSquareFill className='text-[#B3B3B7] w-[22px] h-[22px]  ' />,
+            title: "Entities",
+            href: "/entities",
+        },
     ]
     return (
         <div className='flex min-h-screen'>
