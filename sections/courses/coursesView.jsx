@@ -22,6 +22,8 @@ import CreateCourseModal from '@/app/component/CreateCourseModal';
 import Link from 'next/link';
 import { IoIosAddCircleOutline } from "react-icons/io";
 import AddToStudentModal from '@/app/component/AddToStudentModal';
+import { LiaEdit } from "react-icons/lia";
+import { IoEyeOutline } from "react-icons/io5";
 
 const coursesView = ({courses}) => {
 
@@ -295,10 +297,10 @@ useEffect(() => {
                                                     }}
                                                 >
                                                     <MenuItem onClick={handledeleteModal}><span className='text-[#FF5B5B] flex items-center gap-2'><MdOutlineDelete/>Delete</span></MenuItem>
-                                                    <MenuItem onClick={handleClose}>Edit Student</MenuItem>
+                                                    <MenuItem onClick={handleClose}><span className=' flex items-center gap-2'> <LiaEdit/> Edit Course</span></MenuItem>
                                                     <MenuItem onClick={handleClose}>
-                                                        <Link href={`course/${course.courseId}`}>
-                                                        View Profile
+                                                        <Link  href={`course/${course.courseId}`}>
+                                                        <span className=' flex items-center gap-2'><IoEyeOutline/> View Course</span>
                                                         </Link>
                                                     </MenuItem>
                                                     <MenuItem onClick={handleAddStudentModal}>
@@ -328,10 +330,10 @@ useEffect(() => {
     selectedCourseId={selectedCourseId}
     />
             
-            <CreateCourseModal
-                isModalCreateOpen={isModalCreateOpen}
-                handleCloseCreateModal={handleCloseCreateModal}
-            />
+    <CreateCourseModal
+        isModalCreateOpen={isModalCreateOpen}
+        handleCloseCreateModal={handleCloseCreateModal}
+    />
 </div>
     )
 }

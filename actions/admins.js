@@ -65,44 +65,6 @@ export async function createAdmin(adminData) {
     }
 }
 
-//update
-// export async function updateAdmin(adminData) {
-//     try {
-//         // Define the headers for the request
-//         const headers = {
-//             'Content-Type': 'application/json',
-//         };
-
-//         // Send the PUT request with the adminData as the body
-//         const res = await axios.put(
-//             `https://mobisite201.somee.com/api/Admin/Update/Admin/${adminData.adminId}`, // Endpoint with adminId
-//             adminData, // Body of the request
-//             { headers: headers } // Headers
-//         );
-        
-//         console.log('Admin updated successfully:', res.data); // Log the response data
-//         revalidatePath('/admin'); // Revalidate the path if needed
-//         return res.data; // Return the response data
-//     } catch (error) {
-//         console.error('Error updating admin:', error);
-//         throw error; // Re-throw the error after logging it
-//     }
-// }
-// export async function updateAdmin(adminId, formData) {
-//     try {
-//         const response = await fetch (`https://mobisite201.somee.com/api/Admin/Update/Admin/${adminId}`, {
-//             method: "PUT",
-//             headers: {
-//                 'Content-Type': 'application/json', // Not needed for FormData
-//             },
-//             body: formData,
-//         })
-//         revalidatePath('/admin')
-        
-//     }catch (error) {
-//         console.error("Error creating student:", error);
-//     }
-// }
 
 
 export async function updateAdmin(adminId, formData) {
@@ -124,7 +86,7 @@ export async function updateAdmin(adminId, formData) {
 
 
 
-export async function loginAdmin(adminEmail, adminPassword) {
+export async function loginAdmin(adminEmail, adminPasssword) {
     try {
         // Define the headers for the request
         const headers = {
@@ -134,7 +96,7 @@ export async function loginAdmin(adminEmail, adminPassword) {
         // Define the body of the request
         const payload = {
             adminEmail: adminEmail,
-            adminPassword: adminPassword,
+            adminPasssword: adminPasssword,
         };
 
         // Send the POST request to the login API

@@ -204,3 +204,70 @@ export async function insertStudentToCourse(studentId, courseId) {
         throw error; // Re-throw the error after logging it
     }
 }
+
+
+export async function editMonth(lessonId, lessonName, lessonDescription, courseId) {
+    try {
+      const body = {
+        lessonName: lessonName,
+        lessonDescription: lessonDescription,
+        courseId: courseId
+      };
+  
+      // Make the PUT request to update the lesson
+      const response = await axios.put(`https://mobisite201.somee.com/api/Course/Update/lessson/${lessonId}`, body, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      console.log("Lesson updated successfully:", response.data);
+      return response.data; // Return the response data
+    } catch (error) {
+      console.error("Error updating lesson:", error);
+      throw error; // Re-throw the error for further handling
+    }
+  }
+
+
+  export const updateLecture = async (lectureId, updatedLectureData) => {
+    try {
+      const response = await fetch(`https://mobisite201.somee.com/api/Course/Update/Lecture/${lectureId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedLectureData),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to update lecture');
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error updating lecture:', error);
+      throw error;
+    }
+  };
+  
+
+  export const deleteLecture = async (lectureId) => {
+    try {
+      const response = await fetch(`https://mobisite201.somee.com/api/Course/Delete/Lecture/${lectureId}`, {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete lecture');
+      }
+      revalidatePath(`/course/${courseId}`)
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error deleting lecture:', error);
+      throw error;
+    }
+  };
+  

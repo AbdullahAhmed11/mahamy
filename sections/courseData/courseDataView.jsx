@@ -12,13 +12,20 @@ import { IoIosArrowDown } from "react-icons/io";
 import Button from '@mui/material/Button';
 import AddNewMonth from '@/app/component/AddNewMonth';
 import { deleteMonth } from '@/actions/courses';
-
+import EditMonthModal from '@/app/component/EditMonthModal';
+import { updateLecture } from '@/actions/courses';
+import EditLectureModal from '@/app/component/EditLectureModal';
+import { deleteLecture } from '@/actions/courses';
+import InsertLecture from '@/app/component/InsertLecture';
 const CourseDataView = () => {
     const [courseInfo, setCourseInfo] = useState(null)
 
     const idd = useParams();
     const [openModal, setOpenModal] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [openEditModal, setOpenEditModal] = useState(false); // State for the edit modal
+    const [selectedMonth, setSelectedMonth] = useState(null); // Selected month to edit
+    const [selectedLecture, setSelectedLecture] = useState(null);
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -33,19 +40,19 @@ const CourseDataView = () => {
         setOpenModal(false);
     };
 
-useEffect(() => {
     const fetchData = async () => {
-     
         try {
-            // Fetch course data after lesson creation
             const courseData = await getCourseById(idd.id);
-            setCourseInfo(courseData);  
-        }catch(error) {
-            console.log(error)
+            setCourseInfo(courseData);
+        } catch (error) {
+            console.log(error);
         }
-    }
-    fetchData()
-}, [idd.id])
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [idd.id]);
+
 
 
 const handleDeleteMonth = async (lessonId) => {
@@ -82,6 +89,36 @@ const handleLectureAdded = async () => {
         console.error('Failed to fetch updated course data:', error);
     }
 };
+//edit 
+const handleEditMonthOpen = (month) => {
+    setSelectedMonth(month); // Set the selected month to be edited
+    setOpenEditModal(true); // Open the edit modal
+};
+
+const handleEditModalClose = () => {
+    setOpenEditModal(false);
+};
+
+
+const handleDeleteLecture = async (lectureId) => {
+    const confirmed = window.confirm('Are you sure you want to delete this lecture?');
+    if (confirmed) {
+        try {
+            await deleteLecture(lectureId);
+            setCourseInfo(prevCourseInfo => ({
+                ...prevCourseInfo,
+                lessons: prevCourseInfo.lessons.map(lesson => ({
+                    ...lesson,
+                    lectures: lesson.lectures.filter(lec => lec.lectureId !== lectureId)
+                }))
+            }));
+        } catch (error) {
+            console.error('Failed to delete lecture:', error);
+        }
+    }
+};
+
+//lec
 
 
 
@@ -109,6 +146,7 @@ const handleLectureAdded = async () => {
                         <div className='flex flex-col gap-3 p-4'>
                         <h2 className="font-medium text-[35px]">Course Information</h2>
                             <div className='flex items-center mt-2 gap-3'>
+                            
                                 <h2 className='font-medium text-[20px]'>Course Description : </h2>
                                 <p className='font-normal text-[20px] text-[#929292]'>{courseInfo?.courseDescription}</p>
                             </div>
@@ -162,8 +200,8 @@ const handleLectureAdded = async () => {
                                             <AccordionDetails>
                                                 <div className='flex flex-col gap-4'>
                                                 <div className='flex items-center gap-3'>
-                                                <Button
-                                               onClick={() => handleDeleteMonth(lesson.lessonId)}
+                                                    <Button
+                                                    onClick={() => handleDeleteMonth(lesson.lessonId)}
                                                     sx={{
                                                         padding: "8px",
                                                         background: "#FF5B5B",
@@ -174,9 +212,11 @@ const handleLectureAdded = async () => {
                                                         "&:hover": {
                                                             backgroundColor: "#FF5B5B"
                                                         }
-                                                    }}
-                                                    >Delete Month</Button>
-                                                        <Button
+                                                    }}>
+                                                        Delete Month
+                                                    </Button>
+                                                    <Button
+                                                         onClick={() => handleEditMonthOpen(lesson)} 
                                                         sx={{
                                                             padding: "8px",
                                                             background: "#0A90B0",
@@ -190,6 +230,20 @@ const handleLectureAdded = async () => {
                                                         }}
                                                     >Edit Month 
                                                     </Button>
+                                                    <Button
+                                                        sx={{
+                                                            padding: "8px",
+                                                            background: "#0A90B0",
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center",
+                                                            color:"#fff",
+                                                            "&:hover": {
+                                                                backgroundColor: "#0A90B0"
+                                                            }
+                                                        }}
+                                                    >Add Lecture 
+                                                    </Button>
                                                 </div>
                                                 <div  className='flex flex-col gap-5'>
                                                     {
@@ -200,13 +254,66 @@ const handleLectureAdded = async () => {
                                                             </div>
                                                             <div className='flex flex-col gap-3'>
                                                             <div className='flex items-center gap-2'>
-                                                                <h2 className='font-medium text-[20px]'>Lecture Name : </h2>
-                                                                <p className='font-normal text-[20px] text-[#929292]'>{lec?.lectureName}</p>
+                                                                {
+                                                                    lec?.lectureName ? (
+                                                                            <>
+                                                                        <h2 className='font-medium text-[20px]'>Lecture Name : </h2>
+                                                                        <p className='font-normal text-[20px] text-[#929292]'>{lec?.lectureName}</p>
+                                                                            </>
+                                                                    ) : (
+                                                                        <></>
+                                                                    )
+                                                                }
                                                             </div>
                                                             <div className='flex items-center gap-2'>
-                                                                <h2 className='font-medium text-[20px]'>Lecture Description : </h2>
-                                                                <p className='font-normal text-[20px] text-[#929292]'>{lec?.lectureDescription}</p>
+                                                                {
+                                                                    lec?.lectureDescription ? (
+                                                                        <>    
+                                                                            <h2 className='font-medium text-[20px]'>Lecture Description : </h2>
+                                                                            <p className='font-normal text-[20px] text-[#929292]'>{lec?.lectureDescription}</p>
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                        </>
+                                                                    )
+                                                                }
                                                             </div>
+                                                            {
+                                                                lec?.lectureDescription  && (
+
+                                                            <div className='flex items-center gap-3'>
+                                                    <Button
+                                                    onClick={() => handleDeleteLecture(lec.lectureId)}
+                                                    sx={{
+                                                        padding: "8px",
+                                                        background: "#FF5B5B",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        color:"#fff",
+                                                        "&:hover": {
+                                                            backgroundColor: "#FF5B5B"
+                                                        }
+                                                    }}>
+                                                        Delete Lecture
+                                                    </Button>
+                                                    <Button
+                                                        sx={{
+                                                            padding: "8px",
+                                                            background: "#0A90B0",
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center",
+                                                            color:"#fff",
+                                                            "&:hover": {
+                                                                backgroundColor: "#0A90B0"
+                                                            }
+                                                        }}
+                                                    >Edit Lecture 
+                                                    </Button>
+                                                </div>
+                                                                )
+                                                            }
                                                             </div>
                                                         </div>
 
@@ -228,6 +335,17 @@ const handleLectureAdded = async () => {
              onLessonAdded={handleLessonAdded}
              onLectureAdded={handleLectureAdded}
             />
+
+             {/* Edit Month Modal */}
+             <EditMonthModal
+                open={openEditModal}
+                handleClose={handleEditModalClose}
+                monthData={selectedMonth} // Pass the selected month data
+                onMonthUpdated={handleLessonAdded} // Refresh data after editing
+            />
+
+
+
         </div>
     );
 }
