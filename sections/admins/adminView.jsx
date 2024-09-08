@@ -81,12 +81,12 @@ const adminView = ({admins}) => {
 
     useEffect(() => {
         const filtered  = admins.filter(admin => {
-            const matchesSearchQuery = admin.adminName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            admin.adminEmail?.toLowerCase().includes(searchQuery.toLowerCase())
+            const matchesSearchQuery = admin.adminName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            admin.adminEmail.toLowerCase().includes(searchQuery.toLowerCase())
         return matchesSearchQuery;
         })                            
         setFilterAdmins(filtered)
-    },[searchQuery])
+    },[searchQuery, admins])
 
     return (
         <div className='flex flex-col gap-4'>
@@ -214,12 +214,12 @@ const adminView = ({admins}) => {
     selectedAdmin={selectedAdminId}
 />
 
-<EditAdminModal
+{/* <EditAdminModal
  openModal={openEditModal}
  handleModalClose={handleEditModalClose}
  admin={selectedAdminId}
 
-/>
+/> */}
 
 <CreateAdminModal
    isModalCreateOpen={isModalCreateOpen}

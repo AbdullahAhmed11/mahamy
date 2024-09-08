@@ -94,7 +94,7 @@ const DeleteCourseModal = ({openModal, handleModalClose, selectedCourseId}) => {
         </div>
     </Box>
     </Modal>
-    <ToastContainer />
+    {/* <ToastContainer /> */}
     </>
 
   )

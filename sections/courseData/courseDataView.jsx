@@ -17,6 +17,7 @@ import { updateLecture } from '@/actions/courses';
 import EditLectureModal from '@/app/component/EditLectureModal';
 import { deleteLecture } from '@/actions/courses';
 import InsertLecture from '@/app/component/InsertLecture';
+import AddLectureModal from '@/app/component/AddLectureModal';
 const CourseDataView = () => {
     const [courseInfo, setCourseInfo] = useState(null)
 
@@ -25,6 +26,7 @@ const CourseDataView = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [openEditModal, setOpenEditModal] = useState(false); // State for the edit modal
     const [selectedMonth, setSelectedMonth] = useState(null); // Selected month to edit
+    const [openAddLecture, setOpenAddLecture] = useState(false);
     const [selectedLecture, setSelectedLecture] = useState(null);
 
     const handleClose = () => {
@@ -98,6 +100,15 @@ const handleEditMonthOpen = (month) => {
 const handleEditModalClose = () => {
     setOpenEditModal(false);
 };
+
+//insert lec
+const handleInsertLecOpen = (month) => {
+    setSelectedMonth(month)
+    setOpenAddLecture(true)
+}
+const handleInsertLecClose = () => {
+    setOpenAddLecture(false)
+}
 
 
 const handleDeleteLecture = async (lectureId) => {
@@ -231,6 +242,7 @@ const handleDeleteLecture = async (lectureId) => {
                                                     >Edit Month 
                                                     </Button>
                                                     <Button
+                                                    onClick={() => handleInsertLecOpen(lesson)}
                                                         sx={{
                                                             padding: "8px",
                                                             background: "#0A90B0",
@@ -342,6 +354,13 @@ const handleDeleteLecture = async (lectureId) => {
                 handleClose={handleEditModalClose}
                 monthData={selectedMonth} // Pass the selected month data
                 onMonthUpdated={handleLessonAdded} // Refresh data after editing
+            />
+
+            <AddLectureModal
+                   open={openAddLecture}
+                   handleClose={handleInsertLecClose}
+                   monthData={selectedMonth}
+                   onLectureAdded={handleLectureAdded}
             />
 
 
