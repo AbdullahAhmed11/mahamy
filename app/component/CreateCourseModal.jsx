@@ -82,7 +82,8 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        const DoctorId = localStorage.getItem('adminId');
+        console.log(DoctorId, "dd")
         const formData = new FormData();
         formData.append('CourseName', CourseName);
         formData.append('CourseDescription', CourseDescription);
@@ -90,7 +91,7 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
         formData.append('UnversityId', UnversityId);
         formData.append('CollageId', CollageId);
         formData.append('ClassId', ClassId);
-        formData.append('DoctorId', "1");
+        formData.append('DoctorId', DoctorId);
         if (CourseImage) {
             formData.append('CourseImage', CourseImage);  // Use 'CourseImage' or whatever key your backend expects
           }
