@@ -8,6 +8,7 @@ const EditMonthModal = ({ open, handleClose, monthData, onMonthUpdated }) => {
   const [courseId, setCourseId] = useState('');
 
   useEffect(() => {
+    console.log(monthData)
     if (monthData) {
       setLessonName(monthData.lessonName);
       setLessonDescription(monthData.lessonDescription);

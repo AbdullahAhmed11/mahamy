@@ -11,13 +11,13 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-const AddLectureModal = ({open, handleInsertLectureClose, monthId, onLectureAdded}) => {
-    console.log(monthId, "monthID")
+const AddLectureModal = ({open, handleClose, monthData, onLectureAdded}) => {
     const [lectureName, setLectureName] = useState("");
     const [lectureDescription, setLectureDescription] = useState("");
     const [lectureVideoLink, setlectureVideoLink] = useState("");
     const [selectedOption, setSelectedOption] = useState('video');
     const [pdfFile, setPdfFile] = useState(null);
+
 
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
@@ -37,7 +37,7 @@ const AddLectureModal = ({open, handleInsertLectureClose, monthId, onLectureAdde
                 lectureName,
                 lectureDescription,
                 lectureVideoLink: selectedOption === 'video' ? lectureVideoLink : '', // Pass link only if it's a video
-                lessonId: monthId, 
+                lessonId: monthData?.lessonId, // Assuming courseId is used as monthId, adjust if necessary
                 lectureTypeId
             });
             // handleCloseCreateModal()
@@ -48,7 +48,8 @@ const AddLectureModal = ({open, handleInsertLectureClose, monthId, onLectureAdde
             setPdfFile(null);
 
             if (onLectureAdded) onLectureAdded(); // Notify parent component
-            handleCloseCreateModal();
+            // Notify parent component
+            handleClose();
 
             console.log('Lecture created successfully!');
         } catch (error) {
@@ -56,12 +57,12 @@ const AddLectureModal = ({open, handleInsertLectureClose, monthId, onLectureAdde
         }
     };
 
-  
+
     return (
     <>
     <Modal
         open={open}
-        onClose={handleInsertLectureClose}
+        onClose={handleClose}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
     >
@@ -78,7 +79,7 @@ const AddLectureModal = ({open, handleInsertLectureClose, monthId, onLectureAdde
                 border: "2px solid ##ED2121"
             }}
         >
-                  <form className='w-full flex gap-5 mt-10 justify-between' onSubmit={handleSubmit}>
+       <form className='w-full flex gap-5 mt-10 justify-between' onSubmit={handleSubmit}>
             {selectedOption === 'video' && (
                 <div className='w-1/2 flex flex-col gap-2 bg-[#F1FEFF] border-dashed border-2 items-center justify-center h-[400px]'>
                     <img
