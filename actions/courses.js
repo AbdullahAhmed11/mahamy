@@ -29,6 +29,23 @@ export async function getAllCourses() {
         throw error; // Re-throw the error after logging it
     }
 }
+//edit
+export async function updateCourse(courseId, formData) {
+    try {
+        const response = await fetch (`https://mobisite201.somee.com/api/Course/Update/Course/${courseId}`, {
+            method: "PUT",
+            headers: {
+                // 'Content-Type': 'multipart/form-data', // Not needed for FormData
+            },
+            body: formData,
+        })
+        revalidatePath('/courses')
+       
+    }catch (error) {
+        console.error("Error creating courses:", error);
+    }
+}
+
 
 //delete 
 export async function deleteCourse(courseId) {
