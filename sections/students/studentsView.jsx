@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client'
 import React, { useEffect, useState } from 'react'
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -24,11 +25,11 @@ import DeleteModal from '@/app/component/DeleteModal';
 import CreateStudentModal from '@/app/component/CreateStudentModal';
 import EditStudentModal from '@/app/component/EditStudentModal';
 import AddToStudentModal from '@/app/component/AddToStudentModal';
-import { fetchStudentProfile } from '@/actions/students';
+import { fetchStudentProfile, getStudentCourses } from '@/actions/students';
 import StudentProfile from '@/app/component/StudentProfile';
 
 
-const studentsView = ({students}) => {
+const studentsView = ({ students }) => {
 
     const [age, setAge] = useState('all');
     const [openModal, setOpenModal] = useState(false);
@@ -39,7 +40,7 @@ const studentsView = ({students}) => {
 
     const handleClick = (event, studentId) => {
         setAnchorEl(event.currentTarget);
-        setSelectedStudentId(studentId); 
+        setSelectedStudentId(studentId);
     };
 
     const handleClose = () => {
@@ -58,7 +59,7 @@ const studentsView = ({students}) => {
     const handleCreateOpenModal = () => {
         setIsModalCreateOpen(true);
     };
-    
+
     const handleCloseCreateModal = () => {
         setIsModalCreateOpen(false);
     };
@@ -70,7 +71,7 @@ const studentsView = ({students}) => {
         handleClose();
         setOpenEditModal(true)
     }
-    
+
     const handleEditModalClose = () => {
         setOpenEditModal(false)
     };
@@ -89,6 +90,7 @@ const studentsView = ({students}) => {
     //profile
     const [openDrawer, setOpenDrawer] = useState(false);
     const [dataProfile, setDataProfile] = useState([])
+    const [studentCourses, setStudentCourses] = useState([])
 
     const toggleDrawer = (newOpen) => async () => {
         setOpenDrawer(newOpen);
@@ -96,7 +98,10 @@ const studentsView = ({students}) => {
         if (newOpen && selectedStudentId) {
             try {
                 const response = await fetchStudentProfile(selectedStudentId?.studentId);
+                const responseCourses = await getStudentCourses(selectedStudentId?.studentId);
+                console.log(studentCourses)
                 setDataProfile(response);
+                setStudentCourses(responseCourses)
             } catch (error) {
                 console.error("Failed to fetch student profile:", error);
             }
@@ -156,15 +161,15 @@ const studentsView = ({students}) => {
 
     useEffect(() => {
         const filtered = students.filter(student => {
-            const matchesSearchQuery = student.studentName.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                       student.studentEmail.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesStatus = statusFilter === 'all' || 
-                                  (statusFilter === 'active' && student.studentActivation) || 
-                                  (statusFilter === 'inactive' && !student.studentActivation);
-            const matchesUniversity = universityFilter === 'all' || 
-                                      student.unversityName === universityFilter;  // New filter condition
+            const matchesSearchQuery = student.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                student.studentEmail.toLowerCase().includes(searchQuery.toLowerCase());
+            const matchesStatus = statusFilter === 'all' ||
+                (statusFilter === 'active' && student.studentActivation) ||
+                (statusFilter === 'inactive' && !student.studentActivation);
+            const matchesUniversity = universityFilter === 'all' ||
+                student.unversityName === universityFilter;  // New filter condition
             const matchesCollege = collegeFilter === 'all' ||
-                                      student.collageName === collegeFilter;
+                student.collageName === collegeFilter;
 
             return matchesSearchQuery && matchesStatus && matchesUniversity && matchesCollege;
         });
@@ -174,83 +179,83 @@ const studentsView = ({students}) => {
 
     return (
         <div className='flex flex-col gap-4'>
-         <div className='flex items-center justify-between'>
-                    <h2 className='text-[#09003F] font-bold text-[30px]'> Student</h2>
-                    <div className="flex items-center gap-3">
-                        <Button
-                            endIcon={<CiShare1 />}
-                            style={{
-                                backgroundColor: "#2C0076",
-                                color: "#fff",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                borderRadius: "5px",
-                                width: "180px",
-                                height: "49px"
-                            }}
-                        >
-                            Export user
-                        </Button>
-                        <Button
-                            endIcon={<IoMdAdd />}
-                            onClick={() => handleCreateOpenModal()}
-                            style={{
-                                backgroundColor: "#4834D4",
-                                color: "#fff",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                borderRadius: "5px",
-                                width: "180px",
-                                height: "49px"
-                            }}
-                        >
-                            New Student
-                        </Button>
-                    </div>
+            <div className='flex items-center justify-between'>
+                <h2 className='text-[#09003F] font-bold text-[30px]'> Student</h2>
+                <div className="flex items-center gap-3">
+                    <Button
+                        endIcon={<CiShare1 />}
+                        style={{
+                            backgroundColor: "#2C0076",
+                            color: "#fff",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderRadius: "5px",
+                            width: "180px",
+                            height: "49px"
+                        }}
+                    >
+                        Export user
+                    </Button>
+                    <Button
+                        endIcon={<IoMdAdd />}
+                        onClick={() => handleCreateOpenModal()}
+                        style={{
+                            backgroundColor: "#4834D4",
+                            color: "#fff",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderRadius: "5px",
+                            width: "180px",
+                            height: "49px"
+                        }}
+                    >
+                        New Student
+                    </Button>
                 </div>
-                <div className='w-full flex gap-3 h-[70px] bg-white rounded-md shadow-md p-4'>
-                    <div>
+            </div>
+            <div className='w-full flex gap-3 h-[70px] bg-white rounded-md shadow-md p-4'>
+                <div>
                     <TextField
-    id="standard-basic"
-    variant="standard"
-    sx={{ width: "300px" }}
-    placeholder='Search by username, email'
-    value={searchQuery}
-    onChange={handleSearchChange}
-    InputProps={{
-        startAdornment: (
-            <InputAdornment position="start">
-                <IoIosSearch />
-            </InputAdornment>
-        ),
-    }}
-/>
-                    </div>
-                    <div className='flex gap-5 items-center'>
-                        <Box sx={{ width: 170, height: "40px", display: "flex", alignItems: "center", gap: "3px" }}>
-                            <p>Status: </p>
-                            <FormControl fullWidth>
-                                {/* <InputLabel id="demo-simple-select-label">status</InputLabel> */}
-                                <Select
-    labelId="demo-simple-select-label"
-    id="demo-simple-select"
-    value={statusFilter}
-    label="Status"
-    onChange={handleStatusChange}
->
-    <MenuItem value="all">All</MenuItem>
-    <MenuItem value="active">Active</MenuItem>
-    <MenuItem value="inactive">Not Active</MenuItem>
-</Select>
-                            </FormControl>
-                        </Box>
+                        id="standard-basic"
+                        variant="standard"
+                        sx={{ width: "300px" }}
+                        placeholder='Search by username, email'
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <IoIosSearch />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </div>
+                <div className='flex gap-5 items-center'>
+                    <Box sx={{ width: 170, height: "40px", display: "flex", alignItems: "center", gap: "3px" }}>
+                        <p>Status: </p>
+                        <FormControl fullWidth>
+                            {/* <InputLabel id="demo-simple-select-label">status</InputLabel> */}
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={statusFilter}
+                                label="Status"
+                                onChange={handleStatusChange}
+                            >
+                                <MenuItem value="all">All</MenuItem>
+                                <MenuItem value="active">Active</MenuItem>
+                                <MenuItem value="inactive">Not Active</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
 
 
-                        <Box sx={{ width: 170, height: "40px", display: "flex", alignItems: "center", gap: "3px" }}>
-                            <p>University: </p>
-                            <FormControl fullWidth>
+                    <Box sx={{ width: 170, height: "40px", display: "flex", alignItems: "center", gap: "3px" }}>
+                        <p>University: </p>
+                        <FormControl fullWidth>
                             <Select
                                 labelId="university-filter-label"
                                 id="university-filter"
@@ -264,11 +269,11 @@ const studentsView = ({students}) => {
                                 {/* Add more universities as needed */}
                             </Select>
                         </FormControl>
-                        </Box>
+                    </Box>
 
-                        <Box sx={{ width: 170, height: "40px", display: "flex", alignItems: "center", gap: "3px" }}>
-                            <p>Collage: </p>
-                            <FormControl fullWidth>
+                    <Box sx={{ width: 170, height: "40px", display: "flex", alignItems: "center", gap: "3px" }}>
+                        <p>Collage: </p>
+                        <FormControl fullWidth>
                             <Select
                                 labelId="collage-filter-label"
                                 id="collage-filter"
@@ -282,134 +287,134 @@ const studentsView = ({students}) => {
                                 {/* Add more universities as needed */}
                             </Select>
                         </FormControl>
-                        </Box>
+                    </Box>
 
-                    </div>
                 </div>
-                <div className='w-full bg-white'>
-                    <table className="min-w-full border text-center">
-                        <thead className=" border-b">
-                            <tr>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
-                                    User Name
-                                </th>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
-                                    Email
-                                </th>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+            </div>
+            <div className='w-full bg-white'>
+                <table className="min-w-full border text-center">
+                    <thead className=" border-b">
+                        <tr>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                                User Name
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                                Email
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 University
-                                </th>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 Collage
-                                </th>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 class
-                                </th>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 Student Phone
-                                </th>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 Password
-                                </th>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 Status
-                                </th>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                         
-                         {
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {
                             filteredStudents.map((student) => (
-                            <tr key={student.studentId}>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">{student.studentName}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {student.studentEmail}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {student.unversityName}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {student.collageName}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">{student.className}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">{student.studentPhone}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">{student.studentPassword}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">
-                                            <FormControlLabel
-                                                                control={
-                                                                    <Switch
-                                                                    checked={student.studentActivation}
-                                                                        color="primary"
-                                                                        value="dynamic-class-name"
-                                                                    />
-                                                                }
-                                                            />
-                                            </td>
-                                            <td>
-                                            <div>
+                                <tr key={student.studentId}>
+                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">{student.studentName}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {student.studentEmail}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {student.unversityName}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {student.collageName}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">{student.className}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">{student.studentPhone}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">{student.studentPassword}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">
+                                        <FormControlLabel
+                                            control={
+                                                <Switch
+                                                    checked={student.studentActivation}
+                                                    color="primary"
+                                                    value="dynamic-class-name"
+                                                />
+                                            }
+                                        />
+                                    </td>
+                                    <td>
+                                        <div>
                                             <button onClick={(event) => handleClick(event, student)}>
                                                 <HiDotsVertical className='w-[22px] h-[22px]' />
                                             </button>
-                                                <Menu
-                                                    id="demo-positioned-menu"
-                                                    aria-labelledby="demo-positioned-button"
-                                                    anchorEl={anchorEl}
-                                                    open={open}
-                                                    onClose={handleClose}
-                                                    anchorOrigin={{
+                                            <Menu
+                                                id="demo-positioned-menu"
+                                                aria-labelledby="demo-positioned-button"
+                                                anchorEl={anchorEl}
+                                                open={open}
+                                                onClose={handleClose}
+                                                anchorOrigin={{
                                                     vertical: 'top',
                                                     horizontal: 'left',
-                                                    }}
-                                                    transformOrigin={{
+                                                }}
+                                                transformOrigin={{
                                                     vertical: 'top',
                                                     horizontal: 'left',
-                                                    }}
-                                                >
-                                                    <MenuItem onClick={handleAddStudentModal}>
+                                                }}
+                                            >
+                                                {/* <MenuItem onClick={handleAddStudentModal}>
 
                                                         <span className='text-[#B3B3B7] flex items-center gap-2'> <IoIosAddCircleOutline/> Add to course </span>
-                                                    </MenuItem>
-                                                    <MenuItem onClick={toggleDrawer(true)}>
-                                                    
-                                                    <span className='text-[#B3B3B7] flex items-center gap-2'><IoEyeOutline/> View Profile </span>
-                                                    </MenuItem>
-                                                    <MenuItem onClick={handleEditModal}><span className='text-[#B3B3B7] flex items-center gap-2'> <LiaEdit/> Edit Student</span></MenuItem>
-                                                    <MenuItem onClick={handledeleteModal}><span className='text-[#FF5B5B] flex items-center gap-2'><MdOutlineDelete/>Delete</span></MenuItem>
-                                                </Menu>
-                                                </div>
-                                                </td>
-                            </tr>
+                                                    </MenuItem> */}
+                                                <MenuItem onClick={toggleDrawer(true)}>
+
+                                                    <span className='text-[#B3B3B7] flex items-center gap-2'><IoEyeOutline /> View Profile </span>
+                                                </MenuItem>
+                                                <MenuItem onClick={handleEditModal}><span className='text-[#B3B3B7] flex items-center gap-2'> <LiaEdit /> Edit Student</span></MenuItem>
+                                                <MenuItem onClick={handledeleteModal}><span className='text-[#FF5B5B] flex items-center gap-2'><MdOutlineDelete />Delete</span></MenuItem>
+                                            </Menu>
+                                        </div>
+                                    </td>
+                                </tr>
                             ))
-                         }
-                        </tbody>
-                    </table>
-                    <div>
-                    </div>
+                        }
+                    </tbody>
+                </table>
+                <div>
                 </div>
+            </div>
 
 
-    <DeleteModal
-         openModal={openModal}
-         handleModalClose={handleModalClose}
-         selectedStudent={selectedStudentId}
-    />
-    <CreateStudentModal
-        isModalCreateOpen={isModalCreateOpen}
-        handleCloseCreateModal={handleCloseCreateModal}
-    />
-    <EditStudentModal
-          openModal={openEditModal}
-          handleModalClose={handleEditModalClose}
-          selectedStudent={selectedStudentId}
-    />
-    {/* <AddToStudentModal
+            <DeleteModal
+                openModal={openModal}
+                handleModalClose={handleModalClose}
+                selectedStudent={selectedStudentId}
+            />
+            <CreateStudentModal
+                isModalCreateOpen={isModalCreateOpen}
+                handleCloseCreateModal={handleCloseCreateModal}
+            />
+            <EditStudentModal
+                openModal={openEditModal}
+                handleModalClose={handleEditModalClose}
+                selectedStudent={selectedStudentId}
+            />
+            {/* <AddToStudentModal
     openModal={openAddStudentTo}
     handleModalClose={handleAddStudentModalClose}
     /> */}
-    <StudentProfile
-     toggleDrawer={toggleDrawer}
-     openDrawer={openDrawer}
-     dataProfile={dataProfile}
-                         
-    />
-</div>
+            <StudentProfile
+                toggleDrawer={toggleDrawer}
+                openDrawer={openDrawer}
+                dataProfile={dataProfile}
+                studentCourses={studentCourses}
+            />
+        </div>
     )
 }
 

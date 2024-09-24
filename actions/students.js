@@ -98,3 +98,24 @@ export async function  fetchStudentProfile(studentId)  {
         console.error("Error creating student:", error);
     }
 }
+
+
+export async function getStudentCourses(studentId) {
+    try {
+        const headers = {
+            'Content-Type': 'application/json',
+        };
+
+        // Use axios to send a GET request to the API endpoint with the studentId
+        const response = await axios.get(
+            `https://mobisite201.somee.com/api/Student/Select/Student/Course/${studentId}`,
+            { headers: headers }
+        );
+        
+        console.log(response.data); // Log the response data
+        return response.data; // Return the course data from the response
+    } catch (error) {
+        console.error('Error fetching student courses:', error);
+        throw error; // Re-throw the error after logging it
+    }
+}

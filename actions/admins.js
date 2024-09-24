@@ -18,7 +18,7 @@ export async function getAllAdmins() {
             payload,
             { headers: headers }
         );
-        
+
         console.log(res.data.admins); // Log the response data
         return res.data.admins; // Return the admins data from the response
     } catch (error) {
@@ -32,7 +32,7 @@ export async function deleteAdmin(adminId) {
     try {
         // Make a DELETE request to the API
         const res = await axios.delete(`https://mobisite201.somee.com/api/Admin/Delete/Admin/${adminId}`);
-        
+
         console.log(`admin with ID ${adminId} deleted successfully.`); // Log success
         revalidatePath('/admin')
         return res.data; // Return the response data (if any)
@@ -65,6 +65,30 @@ export async function createAdmin(adminData) {
     }
 }
 
+// export async function updateAdmin(adminId, adminData) {
+//     try {
+//         // Define the headers for the request
+//         const headers = {
+//             'Content-Type': 'application/json',
+//         };
+
+//         // Send the PUT request with the adminData as the body
+//         const res = await axios.put(
+//             `https://mobisite201.somee.com/api/Admin/Update/Admin/${adminId}`,
+//             adminData,
+//             { headers: headers }
+//         );
+//         console.log('Admin updated successfully:', res.data); // Log the response data
+
+//         // Optionally, you can revalidate the path if needed
+//         revalidatePath('/admin'); // Ensure this function is defined
+
+//         return res.data; // Return the response data
+//     } catch (error) {
+//         console.error('Error updating admin:', error);
+//         throw error; // Re-throw the error after logging it
+//     }
+// }
 
 
 export async function updateAdmin(adminId, formData) {
@@ -73,7 +97,7 @@ export async function updateAdmin(adminId, formData) {
             method: "PUT",
             body: formData, // `FormData` instance does not need explicit content type
         });
-        
+
         if (response.ok) {
             revalidatePath('/admin');
         } else {
@@ -107,7 +131,7 @@ export async function loginAdmin(adminEmail, adminPasssword) {
         );
 
         // Check if login was successful based on response data
-     return res.data
+        return res.data
     } catch (error) {
         // Log and throw the error for further handling
         console.error('Error during login:', error.message || error);

@@ -8,12 +8,13 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { createLecture } from '@/actions/courses';
 
-const InsertLecture = ({ lessonId, handleCloseCreateModal, onLectureAdded  }) => {
+const InsertLecture = ({ lessonId, handleCloseCreateModal, onLectureAdded }) => {
     const [lectureName, setLectureName] = useState("");
     const [lectureDescription, setLectureDescription] = useState("");
     const [lectureVideoLink, setlectureVideoLink] = useState("");
     const [selectedOption, setSelectedOption] = useState('video');
     const [pdfFile, setPdfFile] = useState(null);
+    const [lectureExamLink, setLectureExamLink] = useState("")
 
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
@@ -32,7 +33,9 @@ const InsertLecture = ({ lessonId, handleCloseCreateModal, onLectureAdded  }) =>
             await createLecture({
                 lectureName,
                 lectureDescription,
-                lectureVideoLink: selectedOption === 'video' ? lectureVideoLink : '', // Pass link only if it's a video
+                lectureVideoLink: lectureVideoLink,
+                lectureFileLink: pdfFile,
+                lectureExamLink: lectureExamLink,
                 lessonId: lessonId, // Assuming courseId is used as monthId, adjust if necessary
                 lectureTypeId
             });
@@ -81,7 +84,7 @@ const InsertLecture = ({ lessonId, handleCloseCreateModal, onLectureAdded  }) =>
                         />
                         <Button
                             type="submit"
-                            
+
                             sx={{
                                 background: "#09C1E0",
                                 width: "300px",
@@ -130,6 +133,41 @@ const InsertLecture = ({ lessonId, handleCloseCreateModal, onLectureAdded  }) =>
                     </Button>
                 </div>
             )}
+            {selectedOption === 'exam' && (
+                <div className='w-1/2 flex flex-col gap-2 bg-[#F1FEFF] border-dashed border-2 items-center justify-center h-[400px]'>
+                    <label className='text-[#6B6A6A] font-medium'>Add Exam Link (e.g., Google Form)</label>
+                    <TextField
+                        value={lectureExamLink}
+                        onChange={(e) => setLectureExamLink(e.target.value)}
+                        type="url"
+                        fullWidth
+                        required
+                        placeholder="Insert Exam Link"
+                        size="small"
+                        sx={{
+                            marginBottom: '16px',
+                            padding: "5px",
+                            width: "300px",
+                            background: "#F7F7FC",
+                        }}
+                    />
+                    <Button
+                        type="submit"
+                        sx={{
+                            background: "#09C1E0",
+                            width: "300px",
+                            height: "30px",
+                            color: "#fff",
+                            "&:hover": {
+                                backgroundColor: "#09C1E0"
+                            }
+                        }}
+                    >
+                        Add Exam Link
+                    </Button>
+                </div>
+            )}
+
             <div className='w-1/2 flex flex-col gap-6'>
                 <TextField
                     value={lectureName}
@@ -164,6 +202,8 @@ const InsertLecture = ({ lessonId, handleCloseCreateModal, onLectureAdded  }) =>
                     >
                         <FormControlLabel value="video" control={<Radio />} label="YouTube Video" />
                         <FormControlLabel value="pdf" control={<Radio />} label="PDF File" />
+                        <FormControlLabel value="exam" control={<Radio />} label="Exam Link" />
+
                     </RadioGroup>
                 </FormControl>
             </div>

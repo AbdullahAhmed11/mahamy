@@ -71,8 +71,8 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
         if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setCourseImage(imageUrl);
+            // const imageUrl = URL.createObjectURL(file);
+            setCourseImage(file);
         }
     };
 

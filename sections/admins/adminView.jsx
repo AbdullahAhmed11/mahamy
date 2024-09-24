@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client'
 import React, { useEffect, useState } from 'react'
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -23,7 +24,7 @@ import EditAdminModal from '@/app/component/EditAdminModal';
 import CreateAdminModal from '@/app/component/CreateAdminModal';
 import { createAdmin } from '@/actions/admins';
 
-const adminView = ({admins}) => {
+const adminView = ({ admins }) => {
 
     const [age, setAge] = useState('all');
     const [openModal, setOpenModal] = useState(false);
@@ -57,7 +58,7 @@ const adminView = ({admins}) => {
         handleClose();
         setOpenEditModal(true)
     }
-    
+
     const handleEditModalClose = () => {
         setOpenEditModal(false)
     };
@@ -66,7 +67,7 @@ const adminView = ({admins}) => {
     const handleCreateOpenModal = () => {
         setIsModalCreateOpen(true);
     };
-    
+
     const handleCloseCreateModal = () => {
         setIsModalCreateOpen(false);
     };
@@ -80,154 +81,154 @@ const adminView = ({admins}) => {
     };
 
     useEffect(() => {
-        const filtered  = admins.filter(admin => {
+        const filtered = admins.filter(admin => {
             const matchesSearchQuery = admin.adminName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            admin.adminEmail.toLowerCase().includes(searchQuery.toLowerCase())
-        return matchesSearchQuery;
-        })                            
+                admin.adminEmail.toLowerCase().includes(searchQuery.toLowerCase())
+            return matchesSearchQuery;
+        })
         setFilterAdmins(filtered)
-    },[searchQuery, admins])
+    }, [searchQuery, admins])
 
     return (
         <div className='flex flex-col gap-4'>
-         <div className='flex items-center justify-between'>
-                    <h2 className='text-[#09003F] font-bold text-[30px]'> Admins</h2>
-                    <div className="flex items-center gap-3">
-                       
-                        <Button
-                            endIcon={<IoMdAdd />}
-                            onClick={() => handleCreateOpenModal()}
-                            style={{
-                                backgroundColor: "#4834D4",
-                                color: "#fff",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                borderRadius: "5px",
-                                width: "180px",
-                                height: "49px"
-                            }}
-                        >
-                            New Admin
-                        </Button>
-                    </div>
+            <div className='flex items-center justify-between'>
+                <h2 className='text-[#09003F] font-bold text-[30px]'> Admins</h2>
+                <div className="flex items-center gap-3">
+
+                    <Button
+                        endIcon={<IoMdAdd />}
+                        onClick={() => handleCreateOpenModal()}
+                        style={{
+                            backgroundColor: "#4834D4",
+                            color: "#fff",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderRadius: "5px",
+                            width: "180px",
+                            height: "49px"
+                        }}
+                    >
+                        New Admin
+                    </Button>
                 </div>
-                <div className='w-full flex gap-3 h-[70px] bg-white rounded-md shadow-md p-4'>
-                    <div>
+            </div>
+            <div className='w-full flex gap-3 h-[70px] bg-white rounded-md shadow-md p-4'>
+                <div>
                     <TextField
-    id="standard-basic"
-    variant="standard"
-    sx={{ width: "300px" }}
-    placeholder='Search by username, email'
-    value={searchQuery}
-    onChange={handleSearchChange}
-    InputProps={{
-        startAdornment: (
-            <InputAdornment position="start">
-                <IoIosSearch />
-            </InputAdornment>
-        ),
-    }}
-/>
-                    </div>
-                  
+                        id="standard-basic"
+                        variant="standard"
+                        sx={{ width: "300px" }}
+                        placeholder='Search by username, email'
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <IoIosSearch />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
                 </div>
-                <div className='w-full bg-white'>
-                    <table className="min-w-full border text-center">
-                        <thead className=" border-b">
-                            <tr>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
-                                    Full Name
-                                </th>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
-                                    Admin Email
-                                </th>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+
+            </div>
+            <div className='w-full bg-white'>
+                <table className="min-w-full border text-center">
+                    <thead className=" border-b">
+                        <tr>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                                Full Name
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                                Admin Email
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 Instructor Phone
-                                </th>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 Password
-                                </th>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 Permissions
-                                </th>
-                                <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                filterAdmins.map((admin) => (
-                                    <tr key={admin.adminId}>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">{admin.adminName}</td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {admin.adminEmail}</td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {admin.adminPhone}</td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {admin.adminPassword} </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium ">
-                                                        <div
-                                                        className='bg-[#4834D4] text-[#fff] p-4 flex items-center justify-center  rounded-md '
-                                                        >
-                                                            Edit
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                    <div>
-                                                    <button onClick={(event) => handleClick(event, admin)}>
-                                                        <HiDotsVertical className='w-[22px] h-[22px]' />
-                                                    </button>
-                                                        <Menu
-                                                            id="demo-positioned-menu"
-                                                            aria-labelledby="demo-positioned-button"
-                                                            anchorEl={anchorEl}
-                                                            open={open}
-                                                            onClose={handleClose}
-                                                            anchorOrigin={{
-                                                            vertical: 'top',
-                                                            horizontal: 'left',
-                                                            }}
-                                                            transformOrigin={{
-                                                            vertical: 'top',
-                                                            horizontal: 'left',
-                                                            }}
-                                                        >
-                                                            <MenuItem onClick={handleEditModal}><span className='text-[#B3B3B7] flex items-center gap-2'> <LiaEdit/> Edit Student</span></MenuItem>
-                                                            <MenuItem  onClick={handledeleteModal}><span className='text-[#FF5B5B] flex items-center gap-2'><MdOutlineDelete/>Delete</span></MenuItem>
-                                                        </Menu>
-                                                        </div>
-                                                        </td>
-                                    </tr>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            filterAdmins.map((admin) => (
+                                <tr key={admin.adminId}>
+                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">{admin.adminName}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {admin.adminEmail}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {admin.adminPhone}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {admin.adminPassword} </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium ">
+                                        <div
+                                            className='bg-[#4834D4] text-[#fff] p-4 flex items-center justify-center  rounded-md '
+                                        >
+                                            Edit
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <button onClick={(event) => handleClick(event, admin)}>
+                                                <HiDotsVertical className='w-[22px] h-[22px]' />
+                                            </button>
+                                            <Menu
+                                                id="demo-positioned-menu"
+                                                aria-labelledby="demo-positioned-button"
+                                                anchorEl={anchorEl}
+                                                open={open}
+                                                onClose={handleClose}
+                                                anchorOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'left',
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'left',
+                                                }}
+                                            >
+                                                <MenuItem onClick={handleEditModal}><span className='text-[#B3B3B7] flex items-center gap-2'> <LiaEdit /> Edit Student</span></MenuItem>
+                                                <MenuItem onClick={handledeleteModal}><span className='text-[#FF5B5B] flex items-center gap-2'><MdOutlineDelete />Delete</span></MenuItem>
+                                            </Menu>
+                                        </div>
+                                    </td>
+                                </tr>
 
-                                ))
-                            }
-                        
-                        </tbody>
-                    </table>
-                       
-                    <div>
-                    </div>
+                            ))
+                        }
+
+                    </tbody>
+                </table>
+
+                <div>
                 </div>
-    
-<DeleteAdminModal
-    openModal={openModal}
-    handleModalClose={handleModalClose}
-    selectedAdmin={selectedAdminId}
-/>
+            </div>
 
-{/* <EditAdminModal
- openModal={openEditModal}
- handleModalClose={handleEditModalClose}
- admin={selectedAdminId}
+            <DeleteAdminModal
+                openModal={openModal}
+                handleModalClose={handleModalClose}
+                selectedAdmin={selectedAdminId}
+            />
 
-/> */}
+            <EditAdminModal
+                openModal={openEditModal}
+                handleModalClose={handleEditModalClose}
+                admin={selectedAdminId}
 
-<CreateAdminModal
-   isModalCreateOpen={isModalCreateOpen}
-   handleCloseCreateModal={handleCloseCreateModal}
-   
-/>
+            />
 
-</div>
+            <CreateAdminModal
+                isModalCreateOpen={isModalCreateOpen}
+                handleCloseCreateModal={handleCloseCreateModal}
+
+            />
+
+        </div>
     )
 }
 

@@ -62,13 +62,18 @@ const CreateAdminModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
 
         try {
             const response = await createAdmin(adminData);
-
+            toast.success("Admin Created Succeffully")
+            setAdminName('')
+            setAdminEmail('')
+            setAdminPhone('')
+            setAdminPassword('')
+            setPermissions(false)
             console.log('Admin created:', response);
             handleCloseCreateModal(); // Close the modal on success
         } catch (error) {
             console.error('Error creating admin:', error);
-                 
-        } 
+
+        }
     };
 
     return (
@@ -101,68 +106,68 @@ const CreateAdminModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
                             <div className='flex gap-5'>
                                 {/* form  */}
                                 <div className='w-1/2 flex flex-col gap-5'>
-                                <div>
-                                    <TextField
-                                        type="text"
-                                        variant="standard"
-                                        sx={{ width: '100%' }}
-                                        placeholder="Full Name"
-                                        value={adminName}
-                                        onChange={(e) => setAdminName(e.target.value)}
-                                    />
-                                </div>
-                                <div>
-                                    <TextField
-                                        type="email"
-                                        variant="standard"
-                                        sx={{ width: '100%' }}
-                                        placeholder="Admin Email"
-                                        value={adminEmail}
-                                        onChange={(e) => setAdminEmail(e.target.value)}
-                                    />
-                                </div>
-                                <div>
-                                    <TextField
-                                        type="text"
-                                        variant="standard"
-                                        sx={{ width: '100%' }}
-                                        placeholder="Phone Number"
-                                        value={adminPhone}
-                                        onChange={(e) => setAdminPhone(e.target.value)}
-                                    />
-                                </div>
-                                <div>
-                                    <TextField
-                                        type="password"
-                                        variant="standard"
-                                        sx={{ width: '100%' }}
-                                        placeholder="Password"
-                                        value={adminPassword}
-                                        onChange={(e) => setAdminPassword(e.target.value)}
-                                    />
-                                </div>
+                                    <div>
+                                        <TextField
+                                            type="text"
+                                            variant="standard"
+                                            sx={{ width: '100%' }}
+                                            placeholder="Full Name"
+                                            value={adminName}
+                                            onChange={(e) => setAdminName(e.target.value)}
+                                        />
+                                    </div>
+                                    <div>
+                                        <TextField
+                                            type="email"
+                                            variant="standard"
+                                            sx={{ width: '100%' }}
+                                            placeholder="Admin Email"
+                                            value={adminEmail}
+                                            onChange={(e) => setAdminEmail(e.target.value)}
+                                        />
+                                    </div>
+                                    <div>
+                                        <TextField
+                                            type="text"
+                                            variant="standard"
+                                            sx={{ width: '100%' }}
+                                            placeholder="Phone Number"
+                                            value={adminPhone}
+                                            onChange={(e) => setAdminPhone(e.target.value)}
+                                        />
+                                    </div>
+                                    <div>
+                                        <TextField
+                                            type="password"
+                                            variant="standard"
+                                            sx={{ width: '100%' }}
+                                            placeholder="Password"
+                                            value={adminPassword}
+                                            onChange={(e) => setAdminPassword(e.target.value)}
+                                        />
+                                    </div>
                                 </div>
                                 {/* permission */}
                                 <div className='w-1/2 flex flex-col gap-5'>
                                     <div className="flex items-center gap-5 justify-between">
-                                <div className="flex flex-col gap-2">
-                                    <h2 className="text-[#040320] font-bold text-[20px]">Student</h2>
-                                    <p className="text-[#04032099] text-[10px] font-normal">
-                                        By allowing this permission, the admin can manage student data, add and modify student data, and add them to courses.
-                                    </p>
-                                </div>
-                                <div>
-                                    <FormControlLabel
-                                        control={
-                                            <Switch
-                                                color="primary"
-                                                name="student"
-                                                checked={permissions.student}
-                                                onChange={handleSwitchChange}
+                                        <div className="flex flex-col gap-2">
+                                            <h2 className="text-[#040320] font-bold text-[20px]">Student</h2>
+                                            <p className="text-[#04032099] text-[10px] font-normal">
+                                                By allowing this permission, the admin can manage student data, add and modify student data, and add them to courses.
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <FormControlLabel
+                                                control={
+                                                    <Switch
+                                                        color="primary"
+                                                        name="student"
+                                                        checked={permissions.student}
+                                                        onChange={handleSwitchChange}
+                                                    />
+                                                }
                                             />
-                                        }
-                                    />
-                                </div>
+                                        </div>
                                     </div>
                                     <div className="flex items-center gap-5 justify-between">
                                         <div className="flex flex-col gap-2">
@@ -228,33 +233,33 @@ const CreateAdminModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
                             </div>
                             {/* button  */}
                             <div className='flex gap-5'>
-                            <Button
-                            onClick={handleCloseCreateModal}
-                            sx={{
-                                width: '150px',
-                                height: '45px',
-                                borderRadius: '10px',
-                                background: 'transparent',
-                                color: '#4834D4',
-                                borderColor: '#4834D4',
-                                border: '2px solid #4834D4',
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            onClick={handleSubmit}
-                            disabled={isCreating}
-                            sx={{
-                                width: '150px',
-                                height: '45px',
-                                borderRadius: '10px',
-                                background: '#2C0076',
-                                color: '#fff',
-                            }}
-                        >
-                            {isCreating ? "Creating..." : "Create"}
-                        </Button>
+                                <Button
+                                    onClick={handleCloseCreateModal}
+                                    sx={{
+                                        width: '150px',
+                                        height: '45px',
+                                        borderRadius: '10px',
+                                        background: 'transparent',
+                                        color: '#4834D4',
+                                        borderColor: '#4834D4',
+                                        border: '2px solid #4834D4',
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    onClick={handleSubmit}
+                                    disabled={isCreating}
+                                    sx={{
+                                        width: '150px',
+                                        height: '45px',
+                                        borderRadius: '10px',
+                                        background: '#2C0076',
+                                        color: '#fff',
+                                    }}
+                                >
+                                    {isCreating ? "Creating..." : "Create"}
+                                </Button>
 
                             </div>
                         </form>
