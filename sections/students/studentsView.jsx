@@ -29,7 +29,7 @@ import { fetchStudentProfile, getStudentCourses } from '@/actions/students';
 import StudentProfile from '@/app/component/StudentProfile';
 
 
-const studentsView = ({ students }) => {
+const studentsView = ({ students, getAllStudents }) => {
 
     const [age, setAge] = useState('all');
     const [openModal, setOpenModal] = useState(false);
@@ -37,6 +37,11 @@ const studentsView = ({ students }) => {
     const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
     const [selectedStudentId, setSelectedStudentId] = React.useState(null);
     const open = Boolean(anchorEl);
+
+
+    useEffect(() => {
+        getAllStudents()
+    }, [])
 
     const handleClick = (event, studentId) => {
         setAnchorEl(event.currentTarget);
@@ -142,6 +147,7 @@ const studentsView = ({ students }) => {
     const [statusFilter, setStatusFilter] = useState('all');
     const [universityFilter, setUniversityFilter] = useState('all');  // New state for university filter
     const [collegeFilter, setCollegeFilter] = useState('all');
+    const [classFilter, setClassFilter] = useState('all')
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
@@ -158,6 +164,9 @@ const studentsView = ({ students }) => {
         const newCollege = event.target.value;
         setCollegeFilter(newCollege);
     };
+    const handleClassChange = (e) => {
+        setClassFilter(e.target.value)
+    }
 
     useEffect(() => {
         const filtered = students.filter(student => {
@@ -167,15 +176,17 @@ const studentsView = ({ students }) => {
                 (statusFilter === 'active' && student.studentActivation) ||
                 (statusFilter === 'inactive' && !student.studentActivation);
             const matchesUniversity = universityFilter === 'all' ||
-                student.unversityName === universityFilter;  // New filter condition
+                student.unversityName === universityFilter;
             const matchesCollege = collegeFilter === 'all' ||
                 student.collageName === collegeFilter;
+            const matchedClass = classFilter === "all" ||
+                student.className === classFilter
 
-            return matchesSearchQuery && matchesStatus && matchesUniversity && matchesCollege;
+            return matchesSearchQuery && matchesStatus && matchesUniversity && matchesCollege && matchedClass;
         });
 
         setFilteredStudents(filtered);
-    }, [searchQuery, statusFilter, universityFilter, collegeFilter, students]);
+    }, [searchQuery, statusFilter, universityFilter, collegeFilter, classFilter, students]);
 
     return (
         <div className='flex flex-col gap-4'>
@@ -234,24 +245,6 @@ const studentsView = ({ students }) => {
                     />
                 </div>
                 <div className='flex gap-5 items-center'>
-                    <Box sx={{ width: 170, height: "40px", display: "flex", alignItems: "center", gap: "3px" }}>
-                        <p>Status: </p>
-                        <FormControl fullWidth>
-                            {/* <InputLabel id="demo-simple-select-label">status</InputLabel> */}
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={statusFilter}
-                                label="Status"
-                                onChange={handleStatusChange}
-                            >
-                                <MenuItem value="all">All</MenuItem>
-                                <MenuItem value="active">Active</MenuItem>
-                                <MenuItem value="inactive">Not Active</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
-
 
                     <Box sx={{ width: 170, height: "40px", display: "flex", alignItems: "center", gap: "3px" }}>
                         <p>University: </p>
@@ -284,6 +277,26 @@ const studentsView = ({ students }) => {
                                 <MenuItem value="all">All</MenuItem>
                                 <MenuItem value="Medicine Faculty">Medicine </MenuItem>
                                 <MenuItem value="Dentistry  Faculty">Dentistry  </MenuItem>
+                                {/* Add more universities as needed */}
+                            </Select>
+                        </FormControl>
+                    </Box>
+
+
+
+                    <Box sx={{ width: 170, height: "40px", display: "flex", alignItems: "center", gap: "3px" }}>
+                        <p>Class: </p>
+                        <FormControl fullWidth>
+                            <Select
+                                labelId="class-filter-label"
+                                id="class-filter"
+                                value={classFilter}
+                                label="class"
+                                onChange={handleClassChange}
+                            >
+                                <MenuItem value="all">All</MenuItem>
+                                <MenuItem value="Level 1">Level 1 </MenuItem>
+                                <MenuItem value="Level 2">Leve 2  </MenuItem>
                                 {/* Add more universities as needed */}
                             </Select>
                         </FormControl>

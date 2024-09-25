@@ -26,7 +26,7 @@ import AddToStudentModal from '@/app/component/AddToStudentModal';
 import { LiaEdit } from "react-icons/lia";
 import { IoEyeOutline } from "react-icons/io5";
 import EditCourse from '@/app/component/EditCourse';
-const coursesView = ({ courses }) => {
+const coursesView = ({ courses, getAllCourses }) => {
 
     const [age, setAge] = useState('all');
     const [openModal, setOpenModal] = useState(false);
@@ -42,6 +42,10 @@ const coursesView = ({ courses }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    useEffect(() => {
+        getAllCourses()
+    })
     //delete
     const handledeleteModal = () => {
         handleClose();
