@@ -32,7 +32,7 @@ export async function getAllCourses() {
 //edit
 export async function updateCourse(courseId, formData) {
     try {
-        const response = await fetch (`https://mobisite201.somee.com/api/Course/Update/Course/${courseId}`, {
+        const response = await fetch(`https://mobisite201.somee.com/api/Course/Update/Course/${courseId}`, {
             method: "PUT",
             headers: {
                 // 'Content-Type': 'multipart/form-data', // Not needed for FormData
@@ -40,8 +40,8 @@ export async function updateCourse(courseId, formData) {
             body: formData,
         })
         revalidatePath('/courses')
-       
-    }catch (error) {
+
+    } catch (error) {
         console.error("Error creating courses:", error);
     }
 }
@@ -52,7 +52,7 @@ export async function deleteCourse(courseId) {
     try {
         // Make a DELETE request to the API
         const res = await axios.delete(`https://mobisite201.somee.com/api/Course/Delete/Course/${courseId}`);
-        
+
         console.log(`Course with ID ${courseId} deleted successfully.`); // Log success
         revalidatePath('/courses')
         return res.data; // Return the response data (if any)
@@ -76,7 +76,7 @@ export const createCourse = async (formData) => {
         revalidatePath('/courses')
         const data = await response.json();
         return data;
-     
+
     } catch (error) {
         console.error("Error creating course:", error);
     }
@@ -87,10 +87,10 @@ export async function getUniversityCollegeClassData() {
     try {
         // Make a GET request to the API
         const res = await axios.get('https://mobisite201.somee.com/api/Student/Select/Unversity/Collage/Class');
-        
+
         // Log the full response data
         console.log(res.data);
-        
+
         // Extract and return the specific lists from the response
         const { unversityList, collageList, classList } = res.data;
         return { unversityList, collageList, classList };
@@ -141,27 +141,29 @@ export async function getCourseById(courseId) {
 }
 
 //insert lecture
-export async function createLecture({ lectureName, lectureDescription, lectureVideoLink, lessonId, lectureTypeId }) {
+export async function createLecture(lectureName, lectureDescription, lectureVideoLink, lectureFileLink, lectureExamLink, lessonId) {
     try {
         const body = {
-            lectureName,
-            lectureDescription,
-            lectureVideoLink,
-            lessonId,
-            lectureTypeId
+            lectureName: lectureName,
+            lectureDescription: lectureDescription,
+            lectureVideoLink: lectureVideoLink,
+            lectureFileLink: lectureFileLink,
+            lectureExamLink: lectureExamLink,
+            lessonId: lessonId
         };
 
         const response = await axios.post("https://mobisite201.somee.com/api/Course/Insert/Lecture", body, {
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: body
         });
 
         console.log("Lecture created successfully:", response.data);
-        return response.data; // Return the response data
+        return response.data;
     } catch (error) {
         console.error("Error creating lecture:", error);
-        throw error; // Re-throw the error after logging it
+        throw error;
     }
 }
 
@@ -170,7 +172,7 @@ export async function deleteMonth(lessonId) {
     try {
         // Make a DELETE request to the API
         const res = await axios.delete(`https://mobisite201.somee.com/api/Course/Delete/lessson/${lessonId}`);
-        
+
         console.log(`Course with ID  deleted successfully.`); // Log success
         // revalidatePath(`/course/${courseId}`)
         return res.data; // Return the response data (if any)
@@ -225,66 +227,65 @@ export async function insertStudentToCourse(studentId, courseId) {
 
 export async function editMonth(lessonId, lessonName, lessonDescription, courseId) {
     try {
-      const body = {
-        lessonName: lessonName,
-        lessonDescription: lessonDescription,
-        courseId: courseId
-      };
-  
-      // Make the PUT request to update the lesson
-      const response = await axios.put(`https://mobisite201.somee.com/api/Course/Update/lessson/${lessonId}`, body, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      console.log("Lesson updated successfully:", response.data);
-      return response.data; // Return the response data
+        const body = {
+            lessonName: lessonName,
+            lessonDescription: lessonDescription,
+            courseId: courseId
+        };
+
+        // Make the PUT request to update the lesson
+        const response = await axios.put(`https://mobisite201.somee.com/api/Course/Update/lessson/${lessonId}`, body, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        console.log("Lesson updated successfully:", response.data);
+        return response.data; // Return the response data
     } catch (error) {
-      console.error("Error updating lesson:", error);
-      throw error; // Re-throw the error for further handling
+        console.error("Error updating lesson:", error);
+        throw error; // Re-throw the error for further handling
     }
-  }
+}
 
 
-  export const updateLecture = async (lectureId, updatedLectureData) => {
+export const updateLecture = async (lectureId, updatedLectureData) => {
     try {
-      const response = await fetch(`https://mobisite201.somee.com/api/Course/Update/Lecture/${lectureId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedLectureData),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to update lecture');
-      }
-  
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error updating lecture:', error);
-      throw error;
-    }
-  };
-  
+        const response = await fetch(`https://mobisite201.somee.com/api/Course/Update/Lecture/${lectureId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedLectureData),
+        });
 
-  export const deleteLecture = async (lectureId) => {
-    try {
-      const response = await fetch(`https://mobisite201.somee.com/api/Course/Delete/Lecture/${lectureId}`, {
-        method: 'DELETE',
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to delete lecture');
-      }
-      revalidatePath(`/course/${courseId}`)
-      const data = await response.json();
-      return data;
+        if (!response.ok) {
+            throw new Error('Failed to update lecture');
+        }
+
+        const data = await response.json();
+        return data;
     } catch (error) {
-      console.error('Error deleting lecture:', error);
-      throw error;
+        console.error('Error updating lecture:', error);
+        throw error;
     }
-  };
-  
+};
+
+
+export const deleteLecture = async (lectureId) => {
+    try {
+        const response = await fetch(`https://mobisite201.somee.com/api/Course/Delete/Lecture/${lectureId}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete lecture');
+        }
+        revalidatePath(`/course/${courseId}`)
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error deleting lecture:', error);
+        throw error;
+    }
+};

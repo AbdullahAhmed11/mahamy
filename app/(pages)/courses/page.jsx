@@ -8,7 +8,7 @@ async function  page()  {
     <div>
       
       <DashboardLayout>
-        <CoursesView  courses={result}/>
+        <CoursesView  courses={result} getAllCourses={getAllCourses}/>
       </DashboardLayout>
     </div>
   )

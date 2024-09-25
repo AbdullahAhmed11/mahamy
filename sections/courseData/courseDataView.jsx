@@ -130,7 +130,7 @@ const CourseDataView = () => {
 
     //lec
     useEffect(() => {
-        console.log(courseInfo)
+        console.log(courseInfo, "data")
     }, [])
 
 
@@ -261,19 +261,21 @@ const CourseDataView = () => {
                                         <div className='flex flex-col gap-5'>
                                             {
                                                 lesson.lectures.map((lec) => (
-                                                    <div key={lec.lectureId} className='flex items-center gap-5'>
-                                                        {
-                                                            lec.lectureExamLink ? (
-                                                                <div className='flex gap-2'>
-                                                                    <p className="font-bold">Exam Link</p>
-                                                                    <a href={lec.lectureExamLink}>click here</a>
-                                                                </div>
-                                                            ) : (
-                                                                <div>
-                                                                    <ReactPlayer url={lec.lectureVideoLink} />
-                                                                </div>
-                                                            )
-                                                        }
+                                                    <div key={lec.lectureId} className='flex  items-center gap-5'>
+                                                        <div className='flex flex-col   gap-5'>
+                                                            <div>
+                                                                <ReactPlayer url={lec.lectureVideoLink} />
+                                                            </div>
+                                                            <div className='flex gap-2'>
+                                                                <p className="font-bold">Exam Link</p>
+                                                                <a href={lec.lectureExamLink}>click here</a>
+                                                            </div>
+                                                            <div className='flex items-center  gap-5'>
+                                                                <p className="font-bold">PDf Link</p>
+                                                                <a href={lec.lectureFileLink}>click here</a>
+                                                            </div>
+
+                                                        </div>
                                                         <div className='flex flex-col gap-3'>
                                                             <div className='flex items-center gap-2'>
                                                                 {
