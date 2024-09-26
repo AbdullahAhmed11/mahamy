@@ -19,7 +19,7 @@ const AddToStudentModal = ({ openModal, handleModalClose, selectedCourseId }) =>
                 studentName: searchTerm // Send the search term to the API
             };
 
-            const response = await axios.post("https://mobisite201.somee.com/api/Student/Select/All/Student/1/40", body, {
+            const response = await axios.post("https://mhamcourses-001-site1.atempurl.com/api/Student/Select/All/Student/1/40", body, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

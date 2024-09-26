@@ -14,7 +14,7 @@ export async function getAllAdmins() {
         };
 
         const res = await axios.post(
-            "https://mobisite201.somee.com/api/Admin/Select/All/Admin/1/40", {},
+            "https://mhamcourses-001-site1.atempurl.com/api/Admin/Select/All/Admin/1/40", {},
             payload,
             { headers: headers }
         );
@@ -31,7 +31,7 @@ export async function getAllAdmins() {
 export async function deleteAdmin(adminId) {
     try {
         // Make a DELETE request to the API
-        const res = await axios.delete(`https://mobisite201.somee.com/api/Admin/Delete/Admin/${adminId}`);
+        const res = await axios.delete(`https://mhamcourses-001-site1.atempurl.com/api/Admin/Delete/Admin/${adminId}`);
 
         console.log(`admin with ID ${adminId} deleted successfully.`); // Log success
         revalidatePath('/admin')
@@ -52,7 +52,7 @@ export async function createAdmin(adminData) {
 
         // Send the POST request with the adminData as the body
         const res = await axios.post(
-            "https://mobisite201.somee.com/api/Admin/Insert/Admin",
+            "https://mhamcourses-001-site1.atempurl.com/api/Admin/Insert/Admin",
             adminData,
             { headers: headers }
         );
@@ -74,7 +74,7 @@ export async function createAdmin(adminData) {
 
 //         // Send the PUT request with the adminData as the body
 //         const res = await axios.put(
-//             `https://mobisite201.somee.com/api/Admin/Update/Admin/${adminId}`,
+//             `https://mhamcourses-001-site1.atempurl.com/api/Admin/Update/Admin/${adminId}`,
 //             adminData,
 //             { headers: headers }
 //         );
@@ -93,7 +93,7 @@ export async function createAdmin(adminData) {
 
 export async function updateAdmin(adminId, formData) {
     try {
-        const response = await fetch(`https://mobisite201.somee.com/api/Admin/Update/Admin/${adminId}`, {
+        const response = await fetch(`https://mhamcourses-001-site1.atempurl.com/api/Admin/Update/Admin/${adminId}`, {
             method: "PUT",
             body: formData, // `FormData` instance does not need explicit content type
         });
@@ -125,7 +125,7 @@ export async function loginAdmin(adminEmail, adminPasssword) {
 
         // Send the POST request to the login API
         const res = await axios.post(
-            "https://mobisite201.somee.com/api/Admin/Select/Admin/Login",
+            "https://mhamcourses-001-site1.atempurl.com/api/Admin/Select/Admin/Login",
             payload,
             { headers: headers }
         );

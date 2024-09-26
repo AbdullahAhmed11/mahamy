@@ -17,7 +17,7 @@ export async function getAllCourses() {
         };
 
         const res = await axios.post(
-            "https://mobisite201.somee.com/api/Course/Select/All/Course/1/40", {},
+            "https://mhamcourses-001-site1.atempurl.com/api/Course/Select/All/Course/1/40", {},
             payload,
             { headers: headers }
         );
@@ -32,7 +32,7 @@ export async function getAllCourses() {
 //edit
 export async function updateCourse(courseId, formData) {
     try {
-        const response = await fetch(`https://mobisite201.somee.com/api/Course/Update/Course/${courseId}`, {
+        const response = await fetch(`https://mhamcourses-001-site1.atempurl.com/api/Course/Update/Course/${courseId}`, {
             method: "PUT",
             headers: {
                 // 'Content-Type': 'multipart/form-data', // Not needed for FormData
@@ -51,7 +51,7 @@ export async function updateCourse(courseId, formData) {
 export async function deleteCourse(courseId) {
     try {
         // Make a DELETE request to the API
-        const res = await axios.delete(`https://mobisite201.somee.com/api/Course/Delete/Course/${courseId}`);
+        const res = await axios.delete(`https://mhamcourses-001-site1.atempurl.com/api/Course/Delete/Course/${courseId}`);
 
         console.log(`Course with ID ${courseId} deleted successfully.`); // Log success
         revalidatePath('/courses')
@@ -64,7 +64,7 @@ export async function deleteCourse(courseId) {
 
 export const createCourse = async (formData) => {
     try {
-        const response = await fetch("https://mobisite201.somee.com/api/Course/Insert/Course", {
+        const response = await fetch("https://mhamcourses-001-site1.atempurl.com/api/Course/Insert/Course", {
             method: "POST",
             headers: {
                 // 'Content-Type': 'multipart/form-data', // Not needed for FormData
@@ -86,7 +86,7 @@ export const createCourse = async (formData) => {
 export async function getUniversityCollegeClassData() {
     try {
         // Make a GET request to the API
-        const res = await axios.get('https://mobisite201.somee.com/api/Student/Select/Unversity/Collage/Class');
+        const res = await axios.get('https://mhamcourses-001-site1.atempurl.com/api/Student/Select/Unversity/Collage/Class');
 
         // Log the full response data
         console.log(res.data);
@@ -110,7 +110,7 @@ export async function createLesson(lessonName, courseId, lessonDescription) {
             lessonDescription: lessonDescription
         };
 
-        const response = await axios.post("https://mobisite201.somee.com/api/Course/Insert/lessson", body, {
+        const response = await axios.post("https://mhamcourses-001-site1.atempurl.com/api/Course/Insert/lessson", body, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -127,7 +127,7 @@ export async function createLesson(lessonName, courseId, lessonDescription) {
 //getCourse by id
 export async function getCourseById(courseId) {
     try {
-        const response = await axios.get(`https://mobisite201.somee.com/api/Course/Select/Course/${courseId}`, {
+        const response = await axios.get(`https://mhamcourses-001-site1.atempurl.com/api/Course/Select/Course/${courseId}`, {
         });
 
         console.log("Course data retrieved successfully:", response.data);
@@ -152,7 +152,7 @@ export async function createLecture(lectureName, lectureDescription, lectureVide
             lessonId: lessonId
         };
 
-        const response = await axios.post("https://mobisite201.somee.com/api/Course/Insert/Lecture", body, {
+        const response = await axios.post("https://mhamcourses-001-site1.atempurl.com/api/Course/Insert/Lecture", body, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -171,7 +171,7 @@ export async function createLecture(lectureName, lectureDescription, lectureVide
 export async function deleteMonth(lessonId) {
     try {
         // Make a DELETE request to the API
-        const res = await axios.delete(`https://mobisite201.somee.com/api/Course/Delete/lessson/${lessonId}`);
+        const res = await axios.delete(`https://mhamcourses-001-site1.atempurl.com/api/Course/Delete/lessson/${lessonId}`);
 
         console.log(`Course with ID  deleted successfully.`); // Log success
         // revalidatePath(`/course/${courseId}`)
@@ -189,7 +189,7 @@ export async function getStudent(studentName = "") {
             studentName: studentName // Send the student name in the body, default is an empty string
         };
 
-        const response = await axios.post("https://mobisite201.somee.com/api/Student/Select/All/Student/", body, {
+        const response = await axios.post("https://mhamcourses-001-site1.atempurl.com/api/Student/Select/All/Student/", body, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -210,7 +210,7 @@ export async function insertStudentToCourse(studentId, courseId) {
             courseId: courseId
         };
 
-        const response = await axios.post("https://mobisite201.somee.com/api/Student/Insert/Student/In/Course", body, {
+        const response = await axios.post("https://mhamcourses-001-site1.atempurl.com/api/Student/Insert/Student/In/Course", body, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -234,7 +234,7 @@ export async function editMonth(lessonId, lessonName, lessonDescription, courseI
         };
 
         // Make the PUT request to update the lesson
-        const response = await axios.put(`https://mobisite201.somee.com/api/Course/Update/lessson/${lessonId}`, body, {
+        const response = await axios.put(`https://mhamcourses-001-site1.atempurl.com/api/Course/Update/lessson/${lessonId}`, body, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -251,7 +251,7 @@ export async function editMonth(lessonId, lessonName, lessonDescription, courseI
 
 export const updateLecture = async (lectureId, updatedLectureData) => {
     try {
-        const response = await fetch(`https://mobisite201.somee.com/api/Course/Update/Lecture/${lectureId}`, {
+        const response = await fetch(`https://mhamcourses-001-site1.atempurl.com/api/Course/Update/Lecture/${lectureId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -274,7 +274,7 @@ export const updateLecture = async (lectureId, updatedLectureData) => {
 
 export const deleteLecture = async (lectureId) => {
     try {
-        const response = await fetch(`https://mobisite201.somee.com/api/Course/Delete/Lecture/${lectureId}`, {
+        const response = await fetch(`https://mhamcourses-001-site1.atempurl.com/api/Course/Delete/Lecture/${lectureId}`, {
             method: 'DELETE',
         });
 

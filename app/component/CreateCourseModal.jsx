@@ -33,7 +33,7 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
     const [ClassId, setClassId] = useState('');
     const [CoursePrice, setCoursePrice] = useState('');
     const [CourseDescription, setCourseDescription] = useState('');
-    const [courseId, setCourseId] = useState(null); 
+    const [courseId, setCourseId] = useState(null);
     const [courseInfo, setCourseInfo] = useState(null)
 
 
@@ -45,7 +45,7 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
         // Fetch the data from the API when the component mounts
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://mobisite201.somee.com/api/Student/Select/Unversity/Collage/Class');
+                const response = await axios.get('https://mhamcourses-001-site1.atempurl.com/api/Student/Select/Unversity/Collage/Class');
                 setUniversityList(response.data.unversityList);
                 setCollageList(response.data.collageList);
                 setClassList(response.data.classList);
@@ -60,12 +60,12 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
     //handle step
 
     const handleNext = () => {
-      setStep((prevStep) => prevStep + 1);
+        setStep((prevStep) => prevStep + 1);
     };
 
     const handleExited = () => {
         setStep(0); // Reset to the first step when modal closes
-      }
+    }
 
 
     const handleImageUpload = (event) => {
@@ -94,7 +94,7 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
         formData.append('DoctorId', DoctorId);
         if (CourseImage) {
             formData.append('CourseImage', CourseImage);  // Use 'CourseImage' or whatever key your backend expects
-          }
+        }
         try {
             const response = await createCourse(formData);
             console.log(response, "res");
@@ -125,8 +125,8 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
             const courseData = await getCourseById(courseId);
             setCourseInfo(courseData);
             handleNext()
-    
-        }catch(error) {
+
+        } catch (error) {
             console.log(error)
         }
     }
@@ -197,7 +197,7 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
                                             onChange={(e) => setCourseName(e.target.value)}
                                         />
                                     </div>
-                                
+
                                     <div>
                                         <Select
                                             required
@@ -207,7 +207,7 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
                                             value={UnversityId}
                                             onChange={(e) => setUnversityId(e.target.value)}
                                         >
-                                                                         {UniversityList.map((university) => (
+                                            {UniversityList.map((university) => (
                                                 <MenuItem key={university.unversityId} value={university.unversityId}>
                                                     {university.unversityName}
                                                 </MenuItem>
@@ -224,7 +224,7 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
                                             value={CollageId}
                                             onChange={(e) => setCollageId(e.target.value)}
                                         >
-                                              {CollageList.map((collage) => (
+                                            {CollageList.map((collage) => (
                                                 <MenuItem key={collage.collageId} value={collage.collageId}>
                                                     {collage.collageName}
                                                 </MenuItem>
@@ -240,7 +240,7 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
                                             value={ClassId}
                                             onChange={(e) => setClassId(e.target.value)}
                                         >
-                                              {ClassList.map((classItem) => (
+                                            {ClassList.map((classItem) => (
                                                 <MenuItem key={classItem.classId} value={classItem.classId}>
                                                     {classItem.className}
                                                 </MenuItem>
@@ -274,7 +274,7 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
                                         />
                                     </div>
 
-                                    <Button 
+                                    <Button
                                         type='submit'
                                         sx={{
                                             padding: "4px",
@@ -282,7 +282,7 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
                                             display: "flex",
                                             alignItems: "center",
                                             justifyContent: "center",
-                                            color:"#fff",
+                                            color: "#fff",
                                             "&:hover": {
                                                 backgroundColor: "#0A90B0"
                                             }
@@ -293,128 +293,128 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
                                 </div>
                             </form>
                         )}
-{step === 2 && (
-              <div className=' mt-[50px] flex gap-3 flex-col items-center justify-center'>
-                <img
-                    src="/assets/Icontwo.png"
-                    className='w-[100px] h-[100px]'                   
-                    alt='cover'
-                />
-                <p className='text-[#929292] text-[20px] font-medium'>You must add the first Month in order to be able to add content</p>
-              
-                <form className='flex flex-col gap-2 items-center' onSubmit={handleLessonSubmit}> 
-                <TextField
-                required
-                        value={lessonName}
-                        onChange={(e) => setLessonName(e.target.value)}
-                        type="text"
-                        variant="standard"
-                        sx={{
-                        width: "100%"
-                        }}
-                        placeholder='lesson Name'
-                />
-                <TextField
-                required
-                        value={lessonDescription}
-                        onChange={(e) => setLessonDescription(e.target.value)}
-                        type="text"
-                        variant="standard"
-                        sx={{
-                        width: "100%"
-                        }}
-                        placeholder='lesson Description'
-                />
-                  <Button
-                  type='submit'
-                //   onClick={handleCloseCreateModal}
-                    sx={{
-                        padding: "8px",
-                        background:"#004353",
-                        color: "#fff",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "300px",
-                        "&:hover": {
-                            backgroundColor: "#004353"
-                        }
-                    }}
-                >
-                    + New Month
-                </Button>
-                </form>
-              </div>
-            )}
+                        {step === 2 && (
+                            <div className=' mt-[50px] flex gap-3 flex-col items-center justify-center'>
+                                <img
+                                    src="/assets/Icontwo.png"
+                                    className='w-[100px] h-[100px]'
+                                    alt='cover'
+                                />
+                                <p className='text-[#929292] text-[20px] font-medium'>You must add the first Month in order to be able to add content</p>
 
-{step === 3 && courseInfo && (
-                <div className='w-full border border-2 rounded-md mt-[40px] gap-4 flex flex-col h-[300px]'>
-                    
-                    <div className='bg-[#EEEFF2] flex items-center justify-between h-[60px] w-full'>
-                        <h2 className='text-[#1E1E1E] text-[20px] font-medium pl-5'>{courseInfo.lessons[0]?.lessonName}</h2>
-                        <div className='flex items-center gap-2 pr-5'>
-                            <MdDelete className='text-[20px]'/>
-                            
-                            <CiEdit className='text-[20px]' />
-                        </div>
-                    </div>
+                                <form className='flex flex-col gap-2 items-center' onSubmit={handleLessonSubmit}>
+                                    <TextField
+                                        required
+                                        value={lessonName}
+                                        onChange={(e) => setLessonName(e.target.value)}
+                                        type="text"
+                                        variant="standard"
+                                        sx={{
+                                            width: "100%"
+                                        }}
+                                        placeholder='lesson Name'
+                                    />
+                                    <TextField
+                                        required
+                                        value={lessonDescription}
+                                        onChange={(e) => setLessonDescription(e.target.value)}
+                                        type="text"
+                                        variant="standard"
+                                        sx={{
+                                            width: "100%"
+                                        }}
+                                        placeholder='lesson Description'
+                                    />
+                                    <Button
+                                        type='submit'
+                                        //   onClick={handleCloseCreateModal}
+                                        sx={{
+                                            padding: "8px",
+                                            background: "#004353",
+                                            color: "#fff",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            width: "300px",
+                                            "&:hover": {
+                                                backgroundColor: "#004353"
+                                            }
+                                        }}
+                                    >
+                                        + New Month
+                                    </Button>
+                                </form>
+                            </div>
+                        )}
 
-                    
-                    
-                    <div className='flex justify-end gap-3 pr-5'>
-                    <Button
-                                sx={{
-                                    padding: "4px",
-                                    background: "#FF5B5B",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    color:"#fff",
-                                    "&:hover": {
-                                        backgroundColor: "#FF5B5B"
-                                    }
-                                }}
-                            >+ Delete Month</Button>
-                    <Button
-                                onClick={handleNext}
-                                sx={{
-                                    padding: "4px",
-                                    background: "#0A90B0",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    color:"#fff",
-                                    "&:hover": {
-                                        backgroundColor: "#0A90B0"
-                                    }
-                                }}
-                            >+ New Lecture </Button>
-                    </div>
-                    {/* table lec  */}
-                    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
-        <thead>
-          <tr>
-            <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              #
-            </th>
-            <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Lecture Title
-            </th>
-            <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Action
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr className="bg-white hover:bg-gray-50">
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {/* <button
+                        {step === 3 && courseInfo && (
+                            <div className='w-full border border-2 rounded-md mt-[40px] gap-4 flex flex-col h-[300px]'>
+
+                                <div className='bg-[#EEEFF2] flex items-center justify-between h-[60px] w-full'>
+                                    <h2 className='text-[#1E1E1E] text-[20px] font-medium pl-5'>{courseInfo.lessons[0]?.lessonName}</h2>
+                                    <div className='flex items-center gap-2 pr-5'>
+                                        <MdDelete className='text-[20px]' />
+
+                                        <CiEdit className='text-[20px]' />
+                                    </div>
+                                </div>
+
+
+
+                                <div className='flex justify-end gap-3 pr-5'>
+                                    <Button
+                                        sx={{
+                                            padding: "4px",
+                                            background: "#FF5B5B",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            color: "#fff",
+                                            "&:hover": {
+                                                backgroundColor: "#FF5B5B"
+                                            }
+                                        }}
+                                    >+ Delete Month</Button>
+                                    <Button
+                                        onClick={handleNext}
+                                        sx={{
+                                            padding: "4px",
+                                            background: "#0A90B0",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            color: "#fff",
+                                            "&:hover": {
+                                                backgroundColor: "#0A90B0"
+                                            }
+                                        }}
+                                    >+ New Lecture </Button>
+                                </div>
+                                {/* table lec  */}
+                                <div className="overflow-x-auto">
+                                    <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
+                                        <thead>
+                                            <tr>
+                                                <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    #
+                                                </th>
+                                                <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Lecture Title
+                                                </th>
+                                                <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr className="bg-white hover:bg-gray-50">
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    {/* <button
                   className="text-blue-600 hover:text-blue-900"
                 >
                      <div>
@@ -444,17 +444,17 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
                                         </Menu>
                                     </div>
                 </button> */}
-              </td>
-            </tr>
-        </tbody>
-      </table>
-    </div>
-                </div>
-            )}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )}
 
-{step === 4 && (
-                <InsertLecture handleCloseCreateModal={handleCloseCreateModal} lessonId={courseInfo.lessons[0]?.lessonId}/>
-            )}
+                        {step === 4 && (
+                            <InsertLecture handleCloseCreateModal={handleCloseCreateModal} lessonId={courseInfo.lessons[0]?.lessonId} />
+                        )}
 
                         <div className='flex justify-end mt-4 gap-3'>
                             <Button
@@ -465,15 +465,15 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
-                                    color:"#878789",
-                                    border:"1px solid #878789",
+                                    color: "#878789",
+                                    border: "1px solid #878789",
                                     "&:hover": {
                                         backgroundColor: "transparent"
                                     }
                                 }}>
                                 Cancel
                             </Button>
-                           
+
                         </div>
                     </div>
                 </div>

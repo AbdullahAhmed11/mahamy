@@ -27,7 +27,7 @@ import EditStudentModal from '@/app/component/EditStudentModal';
 import AddToStudentModal from '@/app/component/AddToStudentModal';
 import { fetchStudentProfile, getStudentCourses } from '@/actions/students';
 import StudentProfile from '@/app/component/StudentProfile';
-
+import axios from "axios"
 
 const studentsView = ({ students, getAllStudents }) => {
 
@@ -127,7 +127,7 @@ const studentsView = ({ students, getAllStudents }) => {
         // Fetch the data from the API when the component mounts
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://mobisite201.somee.com/api/Student/Select/Unversity/Collage/Class');
+                const response = await axios.get('https://mhamcourses-001-site1.atempurl.com/api/Student/Select/Unversity/Collage/Class');
                 console.log(response)
                 setUniversityList(response.data.unversityList);
                 setCollageList(response.data.collageList);
@@ -256,9 +256,13 @@ const studentsView = ({ students, getAllStudents }) => {
                                 label="University"
                                 onChange={handleUniversityChange}
                             >
-                                <MenuItem value="all">All</MenuItem>
-                                <MenuItem value="Cairo University">Cairo University</MenuItem>
-                                <MenuItem value="Mansoura University">Mansoura University</MenuItem>
+                                {/* <MenuItem value="all">All</MenuItem> */}
+                                {
+                                    UniversityList.map((uni) => (
+                                        <MenuItem key={uni.unversityId} value={uni.unversityName}>{uni.unversityName}</MenuItem>
+                                    ))
+
+                                }
                                 {/* Add more universities as needed */}
                             </Select>
                         </FormControl>
@@ -274,14 +278,16 @@ const studentsView = ({ students, getAllStudents }) => {
                                 label="Collage"
                                 onChange={handleCollegeChange}
                             >
-                                <MenuItem value="all">All</MenuItem>
-                                <MenuItem value="Medicine Faculty">Medicine </MenuItem>
-                                <MenuItem value="Dentistry  Faculty">Dentistry  </MenuItem>
+                                {
+                                    CollageList.map((uni) => (
+                                        <MenuItem key={uni.collageId} value={uni.collageName}>{uni.collageName}</MenuItem>
+                                    ))
+
+                                }
                                 {/* Add more universities as needed */}
                             </Select>
                         </FormControl>
                     </Box>
-
 
 
                     <Box sx={{ width: 170, height: "40px", display: "flex", alignItems: "center", gap: "3px" }}>
@@ -294,9 +300,12 @@ const studentsView = ({ students, getAllStudents }) => {
                                 label="class"
                                 onChange={handleClassChange}
                             >
-                                <MenuItem value="all">All</MenuItem>
-                                <MenuItem value="Level 1">Level 1 </MenuItem>
-                                <MenuItem value="Level 2">Leve 2  </MenuItem>
+                                {
+                                    ClassList.map((uni) => (
+                                        <MenuItem key={uni.classId} value={uni.className}>{uni.className}</MenuItem>
+                                    ))
+
+                                }
                                 {/* Add more universities as needed */}
                             </Select>
                         </FormControl>
