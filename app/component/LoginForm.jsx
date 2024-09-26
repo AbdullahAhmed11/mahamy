@@ -19,11 +19,11 @@ const LoginForm = () => {
         e.preventDefault();
         setLoading(true);
         setError(''); // Clear any previous error message
-    
+
         try {
             // Make a POST request to the login API
             const res = await axios.post(
-                'https://mobisite201.somee.com/api/Admin/Select/Admin/Login',
+                'https://mhamcourses-001-site1.atempurl.com/api/Admin/Select/Admin/Login',
                 {
                     adminEmail,
                     adminPasssword,
@@ -34,11 +34,11 @@ const LoginForm = () => {
                     },
                 }
             );
-    
+
             // Check if adminId exists in the response
             if (res.data && res.status === 200) {
                 const adminId = res.data.adminId;
-    
+
                 if (adminId === undefined) {
                     // Display error toast if adminId is undefined
                     toast.error('Login failed. Email or Password is not correct.');
@@ -62,70 +62,70 @@ const LoginForm = () => {
             setLoading(false);
         }
     };
-    
+
 
     return (
         <>
-        <div className='flex flex-col'>
-            <div className='p-4 flex gap-2 items-center'>
-                <div className='flex items-center justify-center w-[41px] h-[63px] rounded-md'>
-                    <img
-                        src="/assets/mahamyLogo.png"
-                        className='w-full h-full'
-                    />
-                </div>
-                <p className='font-bold text-second text-[30px]'>Mahamy</p>
-            </div>
-            <div className='flex items-center justify-center '>
-                <div className='flex flex-col w-[400px] rounded-md border p-4'>
-                    <h2 className='font-bold text-[60px] mb-10'>Sign In</h2>
-                    <form className='flex flex-col gap-5' onSubmit={handleLogin}>
-                        <TextField
-                            id="admin-email"
-                            label="Email"
-                            type="email"
-                            variant="standard"
-                            sx={{ width: "100%" }}
-                            value={adminEmail}
-                            onChange={(e) => setAdminEmail(e.target.value)}
+            <div className='flex flex-col'>
+                <div className='p-4 flex gap-2 items-center'>
+                    <div className='flex items-center justify-center w-[41px] h-[63px] rounded-md'>
+                        <img
+                            src="/assets/mahamyLogo.png"
+                            className='w-full h-full'
                         />
-                        <TextField
-                            id="admin-password"
-                            label="Password"
-                            type="password"
-                            autoComplete="current-password"
-                            variant="standard"
-                            sx={{ width: "100%" }}
-                            value={adminPasssword}
-                            onChange={(e) => setAdminPasssword(e.target.value)}
-                        />
-                        {error && (
-                            <p className='text-red-500'>{error}</p> // Display error message if there is one
-                        )}
-                        <div className='flex items-center justify-center'>
-                            <Button
-                                type="submit"
-                                disabled={loading}
-                                sx={{
-                                    width: '136px',
-                                    height: "50px",
-                                    background: "#4834D4",
-                                    borderRadius: 2,
-                                    color: "#fff",
-                                    '&:hover': {
-                                        background: "#0A90B0",
-                                    },
-                                }}
-                                variant="contained"
-                            >
-                                {loading ? 'Logging in...' : 'Login'}
-                            </Button>
-                        </div>
-                    </form>
+                    </div>
+                    <p className='font-bold text-second text-[30px]'>Mahamy</p>
+                </div>
+                <div className='flex items-center justify-center '>
+                    <div className='flex flex-col w-[400px] rounded-md border p-4'>
+                        <h2 className='font-bold text-[60px] mb-10'>Sign In</h2>
+                        <form className='flex flex-col gap-5' onSubmit={handleLogin}>
+                            <TextField
+                                id="admin-email"
+                                label="Email"
+                                type="email"
+                                variant="standard"
+                                sx={{ width: "100%" }}
+                                value={adminEmail}
+                                onChange={(e) => setAdminEmail(e.target.value)}
+                            />
+                            <TextField
+                                id="admin-password"
+                                label="Password"
+                                type="password"
+                                autoComplete="current-password"
+                                variant="standard"
+                                sx={{ width: "100%" }}
+                                value={adminPasssword}
+                                onChange={(e) => setAdminPasssword(e.target.value)}
+                            />
+                            {error && (
+                                <p className='text-red-500'>{error}</p> // Display error message if there is one
+                            )}
+                            <div className='flex items-center justify-center'>
+                                <Button
+                                    type="submit"
+                                    disabled={loading}
+                                    sx={{
+                                        width: '136px',
+                                        height: "50px",
+                                        background: "#4834D4",
+                                        borderRadius: 2,
+                                        color: "#fff",
+                                        '&:hover': {
+                                            background: "#0A90B0",
+                                        },
+                                    }}
+                                    variant="contained"
+                                >
+                                    {loading ? 'Logging in...' : 'Login'}
+                                </Button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-        <ToastContainer/>
+            <ToastContainer />
         </>
     );
 };

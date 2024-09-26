@@ -13,11 +13,11 @@ export async function getAllStudents() {
         };
 
         const res = await axios.post(
-            "https://mobisite201.somee.com/api/Student/Select/All/Student/1/40", {},
+            "https://mhamcourses-001-site1.atempurl.com/api/Student/Select/All/Student/1/40", {},
             payload,
             { headers: headers }
         );
-        
+
         console.log(res.data.students); // Log the response data
         return res.data.students; // Return the student data from the response
     } catch (error) {
@@ -30,8 +30,8 @@ export async function getAllStudents() {
 export async function deleteStudent(studentId) {
     try {
         // Make a DELETE request to the API
-        const res = await axios.delete(`https://mobisite201.somee.com/api/Student/Delete/Student/${studentId}`);
-        
+        const res = await axios.delete(`https://mhamcourses-001-site1.atempurl.com/api/Student/Delete/Student/${studentId}`);
+
         console.log(`Student with ID ${studentId} deleted successfully.`); // Log success
         revalidatePath('/students')
         return res.data; // Return the response data (if any)
@@ -44,7 +44,7 @@ export async function deleteStudent(studentId) {
 //create
 export const createStudent = async (formData) => {
     try {
-        const response = await fetch("https://mobisite201.somee.com/api/Student/Insert/Student", {
+        const response = await fetch("https://mhamcourses-001-site1.atempurl.com/api/Student/Insert/Student", {
             method: "POST",
             headers: {
                 // 'Content-Type': 'multipart/form-data', // Not needed for FormData
@@ -53,7 +53,7 @@ export const createStudent = async (formData) => {
         });
 
         revalidatePath('/students')
-     
+
     } catch (error) {
         console.error("Error creating student:", error);
     }
@@ -62,7 +62,7 @@ export const createStudent = async (formData) => {
 //update
 export async function updateStudent(studentId, formData) {
     try {
-        const response = await fetch (`https://mobisite201.somee.com/api/Student/Update/Student/${studentId}`, {
+        const response = await fetch(`https://mhamcourses-001-site1.atempurl.com/api/Student/Update/Student/${studentId}`, {
             method: "PUT",
             headers: {
                 // 'Content-Type': 'multipart/form-data', // Not needed for FormData
@@ -70,21 +70,21 @@ export async function updateStudent(studentId, formData) {
             body: formData,
         })
         revalidatePath('/students')
-    }catch (error) {
+    } catch (error) {
         console.error("Error creating student:", error);
     }
 }
 
 //profile
 
-export async function  fetchStudentProfile(studentId)  {
-    try{
+export async function fetchStudentProfile(studentId) {
+    try {
         const headers = {
             'Content-Type': 'application/json',
         };
-        const response = await fetch(`https://mobisite201.somee.com/api/Student/Select/Student/Profile/${studentId}`, {
+        const response = await fetch(`https://mhamcourses-001-site1.atempurl.com/api/Student/Select/Student/Profile/${studentId}`, {
             method: "GET",
-            headers: {headers}
+            headers: { headers }
         })
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -94,7 +94,7 @@ export async function  fetchStudentProfile(studentId)  {
 
         return data;
 
-    }catch(error) {
+    } catch (error) {
         console.error("Error creating student:", error);
     }
 }
@@ -108,10 +108,10 @@ export async function getStudentCourses(studentId) {
 
         // Use axios to send a GET request to the API endpoint with the studentId
         const response = await axios.get(
-            `https://mobisite201.somee.com/api/Student/Select/Student/Course/${studentId}`,
+            `https://mhamcourses-001-site1.atempurl.com/api/Student/Select/Student/Course/${studentId}`,
             { headers: headers }
         );
-        
+
         console.log(response.data); // Log the response data
         return response.data; // Return the course data from the response
     } catch (error) {

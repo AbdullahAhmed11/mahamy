@@ -26,6 +26,7 @@ import AddToStudentModal from '@/app/component/AddToStudentModal';
 import { LiaEdit } from "react-icons/lia";
 import { IoEyeOutline } from "react-icons/io5";
 import EditCourse from '@/app/component/EditCourse';
+import axios from "axios"
 const coursesView = ({ courses, getAllCourses }) => {
 
     const [age, setAge] = useState('all');
@@ -45,7 +46,7 @@ const coursesView = ({ courses, getAllCourses }) => {
 
     useEffect(() => {
         getAllCourses()
-    })
+    }, [])
     //delete
     const handledeleteModal = () => {
         handleClose();
@@ -90,7 +91,26 @@ const coursesView = ({ courses, getAllCourses }) => {
 
     //filters
 
+    const [UniversityList, setUniversityList] = useState([]);
+    const [CollageList, setCollageList] = useState([]);
+    const [ClassList, setClassList] = useState([]);
 
+    useEffect(() => {
+        // Fetch the data from the API when the component mounts
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('https://mhamcourses-001-site1.atempurl.com/api/Student/Select/Unversity/Collage/Class');
+                console.log(response)
+                setUniversityList(response.data.unversityList);
+                setCollageList(response.data.collageList);
+                setClassList(response.data.classList);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
     // search and filter 
     const [searchQuery, setSearchQuery] = useState('');
     const [filtercourses, setFilterCourses] = useState(courses);
@@ -130,13 +150,13 @@ const coursesView = ({ courses, getAllCourses }) => {
                 data.unversityName === universityFilter;  // New filter condition
             const matchesCollege = collegeFilter === 'all' ||
                 data.collageName === collegeFilter;
-                const matchedClass = classFilter === "all" ||
+            const matchedClass = classFilter === "all" ||
                 data.className === classFilter
             return matchesSearchQuery && matchesStatus && matchesUniversity && matchesCollege && matchedClass;
         })
 
         setFilterCourses(filtered)
-    }, [searchQuery, statusFilter, universityFilter, collegeFilter,classFilter, courses])
+    }, [searchQuery, statusFilter, universityFilter, collegeFilter, classFilter, courses])
 
 
     return (
@@ -227,9 +247,13 @@ const coursesView = ({ courses, getAllCourses }) => {
                                 label="University"
                                 onChange={handleUniversityChange}
                             >
-                                <MenuItem value="all">All</MenuItem>
-                                <MenuItem value="Cairo University">Cairo University</MenuItem>
-                                <MenuItem value="Ain Shams University">Ain Shams University</MenuItem>
+                                {/* <MenuItem value="all">All</MenuItem> */}
+                                {
+                                    UniversityList.map((uni) => (
+                                        <MenuItem key={uni.unversityId} value={uni.unversityName}>{uni.unversityName}</MenuItem>
+                                    ))
+
+                                }
                                 {/* Add more universities as needed */}
                             </Select>
                         </FormControl>
@@ -245,13 +269,17 @@ const coursesView = ({ courses, getAllCourses }) => {
                                 label="Collage"
                                 onChange={handleCollegeChange}
                             >
-                                <MenuItem value="all">All</MenuItem>
-                                <MenuItem value="Medicine Faculty">Medicine </MenuItem>
-                                <MenuItem value="Dentistry  Faculty">Dentistry  </MenuItem>
+                                {
+                                    CollageList.map((uni) => (
+                                        <MenuItem key={uni.collageId} value={uni.collageName}>{uni.collageName}</MenuItem>
+                                    ))
+
+                                }
                                 {/* Add more universities as needed */}
                             </Select>
                         </FormControl>
                     </Box>
+
 
                     <Box sx={{ width: 170, height: "40px", display: "flex", alignItems: "center", gap: "3px" }}>
                         <p>Class: </p>
@@ -263,9 +291,12 @@ const coursesView = ({ courses, getAllCourses }) => {
                                 label="class"
                                 onChange={handleClassChange}
                             >
-                                <MenuItem value="all">All</MenuItem>
-                                <MenuItem value="Level 1">Level 1 </MenuItem>
-                                <MenuItem value="Level 2">Leve 2  </MenuItem>
+                                {
+                                    ClassList.map((uni) => (
+                                        <MenuItem key={uni.classId} value={uni.className}>{uni.className}</MenuItem>
+                                    ))
+
+                                }
                                 {/* Add more universities as needed */}
                             </Select>
                         </FormControl>

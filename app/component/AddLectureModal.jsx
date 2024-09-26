@@ -34,7 +34,7 @@ const AddLectureModal = ({ open, handleClose, monthData, onLectureAdded }) => {
         };
 
         try {
-            const response = await fetch('https://mobisite201.somee.com/api/Course/Insert/Lecture', {
+            const response = await fetch('https://mhamcourses-001-site1.atempurl.com/api/Course/Insert/Lecture', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

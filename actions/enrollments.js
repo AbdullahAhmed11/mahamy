@@ -14,13 +14,13 @@ export async function ferchEnrollments() {
         };
 
         const res = await axios.post(
-            "https://mobisite201.somee.com/api/Course/Select/Course/Enrolment", {},
+            "https://mhamcourses-001-site1.atempurl.com/api/Course/Select/Course/Enrolment", {},
             payload,
             { headers: headers }
         );
-        
-        console.log(res.data); 
-        return res.data; 
+
+        console.log(res.data);
+        return res.data;
     } catch (error) {
         console.error('Error fetching data:', error);
         throw error; // Re-throw the error after logging it
