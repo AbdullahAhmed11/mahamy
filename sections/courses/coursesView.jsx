@@ -97,6 +97,7 @@ const coursesView = ({ courses, getAllCourses }) => {
     const [statusFilter, setStatusFilter] = useState('all');
     const [universityFilter, setUniversityFilter] = useState('all');  // New state for university filter
     const [collegeFilter, setCollegeFilter] = useState('all');
+    const [classFilter, setClassFilter] = useState('all')
 
 
     const handleSearchChange = (event) => {
@@ -113,6 +114,9 @@ const coursesView = ({ courses, getAllCourses }) => {
         const newCollege = event.target.value;
         setCollegeFilter(newCollege);
     };
+    const handleClassChange = (e) => {
+        setClassFilter(e.target.value)
+    }
 
     useEffect(() => {
         const filtered = courses.filter(data => {
@@ -126,12 +130,13 @@ const coursesView = ({ courses, getAllCourses }) => {
                 data.unversityName === universityFilter;  // New filter condition
             const matchesCollege = collegeFilter === 'all' ||
                 data.collageName === collegeFilter;
-
-            return matchesSearchQuery && matchesStatus && matchesUniversity && matchesCollege;
+                const matchedClass = classFilter === "all" ||
+                data.className === classFilter
+            return matchesSearchQuery && matchesStatus && matchesUniversity && matchesCollege && matchedClass;
         })
 
         setFilterCourses(filtered)
-    }, [searchQuery, statusFilter, universityFilter, collegeFilter, courses])
+    }, [searchQuery, statusFilter, universityFilter, collegeFilter,classFilter, courses])
 
 
     return (
@@ -248,7 +253,23 @@ const coursesView = ({ courses, getAllCourses }) => {
                         </FormControl>
                     </Box>
 
-
+                    <Box sx={{ width: 170, height: "40px", display: "flex", alignItems: "center", gap: "3px" }}>
+                        <p>Class: </p>
+                        <FormControl fullWidth>
+                            <Select
+                                labelId="class-filter-label"
+                                id="class-filter"
+                                value={classFilter}
+                                label="class"
+                                onChange={handleClassChange}
+                            >
+                                <MenuItem value="all">All</MenuItem>
+                                <MenuItem value="Level 1">Level 1 </MenuItem>
+                                <MenuItem value="Level 2">Leve 2  </MenuItem>
+                                {/* Add more universities as needed */}
+                            </Select>
+                        </FormControl>
+                    </Box>
                 </div>
 
             </div>
