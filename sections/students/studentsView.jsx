@@ -341,6 +341,7 @@ const studentsView = ({ students, getAllStudents }) => {
                             <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 Status
                             </th>
+
                             <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 Actions
                             </th>
@@ -369,6 +370,7 @@ const studentsView = ({ students, getAllStudents }) => {
                                             }
                                         />
                                     </td>
+
                                     <td>
                                         <div>
                                             <button onClick={(event) => handleClick(event, student)}>
@@ -402,6 +404,7 @@ const studentsView = ({ students, getAllStudents }) => {
                                             </Menu>
                                         </div>
                                     </td>
+
                                 </tr>
                             ))
                         }
