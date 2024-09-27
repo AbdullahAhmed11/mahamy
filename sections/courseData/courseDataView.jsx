@@ -18,6 +18,9 @@ import EditLectureModal from '@/app/component/EditLectureModal';
 import { deleteLecture } from '@/actions/courses';
 import InsertLecture from '@/app/component/InsertLecture';
 import AddLectureModal from '@/app/component/AddLectureModal';
+import axios from "axios"
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const CourseDataView = () => {
     const [courseInfo, setCourseInfo] = useState(null)
 
@@ -111,21 +114,21 @@ const CourseDataView = () => {
 
 
     const handleDeleteLecture = async (lectureId) => {
-        const confirmed = window.confirm('Are you sure you want to delete this lecture?');
-        if (confirmed) {
-            try {
-                await deleteLecture(lectureId);
-                setCourseInfo(prevCourseInfo => ({
-                    ...prevCourseInfo,
-                    lessons: prevCourseInfo.lessons.map(lesson => ({
-                        ...lesson,
-                        lectures: lesson.lectures.filter(lec => lec.lectureId !== lectureId)
-                    }))
-                }));
-            } catch (error) {
-                console.error('Failed to delete lecture:', error);
-            }
+        try {
+            await axios.delete(`https://mhamcourses-001-site1.atempurl.com/api/Course/Delete/Lecture/${lectureId}`)
+            fetchData()
+            toast.success("Lecture Deleted Succesfuly!")
+            setCourseInfo(prevCourseInfo => ({
+                ...prevCourseInfo,
+                lessons: prevCourseInfo.lessons.map(lesson => ({
+                    ...lesson,
+                    lectures: lesson.lectures.filter(lec => lec.lectureId !== lectureId)
+                }))
+            }));
+        } catch (error) {
+            console.error('Failed to delete lecture:', error);
         }
+
     };
 
     //lec
@@ -266,14 +269,24 @@ const CourseDataView = () => {
                                                             <div>
                                                                 <ReactPlayer url={lec.lectureVideoLink} />
                                                             </div>
-                                                            <div className='flex gap-2'>
-                                                                <p className="font-bold">Exam Link</p>
-                                                                <a href={lec.lectureExamLink}>click here</a>
-                                                            </div>
-                                                            <div className='flex items-center  gap-5'>
-                                                                <p className="font-bold">PDf Link</p>
-                                                                <a href={lec.lectureFileLink}>click here</a>
-                                                            </div>
+                                                            {
+                                                                lec.lectureExamLink ? (
+
+                                                                    <div className='flex gap-2'>
+                                                                        <p className="font-bold">Exam Link</p>
+                                                                        <a href={lec.lectureExamLink}>click here</a>
+                                                                    </div>
+                                                                ) : (<></>)
+                                                            }
+                                                            {
+                                                                lec.lectureFileLink ? (
+                                                                    <div className='flex items-center  gap-5'>
+                                                                        <p className="font-bold">PDf Link</p>
+                                                                        <a href={lec.lectureFileLink}>click here</a>
+                                                                    </div>
+                                                                ) : (<></>)
+                                                            }
+
 
                                                         </div>
                                                         <div className='flex flex-col gap-3'>
@@ -321,7 +334,7 @@ const CourseDataView = () => {
                                                                             }}>
                                                                             Delete Lecture
                                                                         </Button>
-                                                                        <Button
+                                                                        {/* <Button
                                                                             sx={{
                                                                                 padding: "8px",
                                                                                 background: "#0A90B0",
@@ -334,7 +347,7 @@ const CourseDataView = () => {
                                                                                 }
                                                                             }}
                                                                         >Edit Lecture
-                                                                        </Button>
+                                                                        </Button> */}
                                                                     </div>
                                                                 )
                                                             }

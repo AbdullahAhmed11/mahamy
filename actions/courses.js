@@ -1,6 +1,7 @@
 'use server'
 import { revalidatePath } from 'next/cache'
 import axios from 'axios';
+import { cookies } from "next/headers";
 
 
 export async function getAllCourses() {
@@ -22,6 +23,29 @@ export async function getAllCourses() {
             { headers: headers }
         );
         revalidatePath('/courses')
+        console.log(res.data.courses); // Log the response data
+        return res.data.courses; // Return the student data from the response
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error; // Re-throw the error after logging it
+    }
+}
+
+
+
+export async function getAllCoursesbyAdmin() {
+    const adminId = cookies().get("adminId")?.value;
+    try {
+        const headers = {
+            'Content-Type': 'application/json',
+        };
+
+
+        const res = await axios.get(
+            `https://mhamcourses-001-site1.atempurl.com/api/Admin/Select/Admin/Course/1/40/${adminId}`, {},
+            { headers: headers }
+        );
+        // revalidatePath('/courses')
         console.log(res.data.courses); // Log the response data
         return res.data.courses; // Return the student data from the response
     } catch (error) {

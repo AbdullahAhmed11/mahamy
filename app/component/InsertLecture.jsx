@@ -7,206 +7,123 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { createLecture } from '@/actions/courses';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios"
+const InsertLecture = ({ lessonId, handleCloseCreateModal, setStep, onLectureAdded }) => {
+    const [lectureName, setLectureName] = useState('');
+    const [lectureDescription, setLectureDescription] = useState('');
+    const [lectureVideoLink, setLectureVideoLink] = useState('');
+    const [lectureFileLink, setLectureFileLink] = useState('');
+    const [lectureExamLink, setLectureExamLink] = useState('');
 
-const InsertLecture = ({ lessonId, handleCloseCreateModal, onLectureAdded }) => {
-    const [lectureName, setLectureName] = useState("");
-    const [lectureDescription, setLectureDescription] = useState("");
-    const [lectureVideoLink, setlectureVideoLink] = useState("");
-    const [selectedOption, setSelectedOption] = useState('video');
-    const [pdfFile, setPdfFile] = useState(null);
-    const [lectureExamLink, setLectureExamLink] = useState("")
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevent form from refreshing the page
 
-    const handleOptionChange = (event) => {
-        setSelectedOption(event.target.value);
-    };
-
-    const handleFileUpload = (event) => {
-        setPdfFile(event.target.files[0]);
-    };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        const lectureTypeId = selectedOption === 'video' ? 1 : 2; // Assuming 1 for video and 2 for PDF
+        const lectureData = {
+            lectureName,
+            lectureDescription,
+            lectureVideoLink,
+            lectureFileLink,
+            lectureExamLink,
+            lessonId: lessonId
+        };
 
         try {
-            await createLecture({
-                lectureName,
-                lectureDescription,
-                lectureVideoLink: lectureVideoLink,
-                lectureFileLink: pdfFile,
-                lectureExamLink: lectureExamLink,
-                lessonId: lessonId, // Assuming courseId is used as monthId, adjust if necessary
-                lectureTypeId
+            const response = await fetch('https://mhamcourses-001-site1.atempurl.com/api/Course/Insert/Lecture', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(lectureData)
             });
-            // handleCloseCreateModal()
-            // Reset the form after successful submission
-            setLectureName("");
-            setLectureDescription("");
-            setlectureVideoLink("");
-            setPdfFile(null);
 
-            if (onLectureAdded) onLectureAdded(); // Notify parent component
-            handleCloseCreateModal();
+            // Log raw response for debugging
+            console.log(response);
 
-            console.log('Lecture created successfully!');
+            // Check if the response is OK
+            if (response.ok) {
+                // Try to parse JSON, but if it fails, handle it
+                let data;
+                try {
+                    data = await response.json();
+                } catch (err) {
+                    console.warn('Response is not JSON:', err);
+                    data = null; // Handle non-JSON response (e.g., plain text)
+                }
+
+                // If we get a valid response, handle success
+                if (data) {
+                    toast.success('Lecture added successfully!');
+                } else {
+                    toast.success('Lecture added, but the response was not JSON.');
+                }
+
+                if (onLectureAdded) onLectureAdded();  // Notify parent component that a new lecture was added
+                setLectureName('')
+                setLectureDescription('')
+                setLectureVideoLink('')
+                setLectureFileLink('')
+                setLectureExamLink('')
+                handleClose(); // Close the modal
+                // setStep(1)
+            } else {
+                const errorMessage = `Failed to add lecture: ${response.status} ${response.statusText}`;
+                toast.error(errorMessage);
+            }
         } catch (error) {
-            console.error('Error creating lecture:', error);
+            console.error('Network error:', error);
+            toast.error('Failed to add lecture: Network error');
         }
     };
 
     return (
-        <form className='w-full flex gap-5 mt-10 justify-between' onSubmit={handleSubmit}>
-            {selectedOption === 'video' && (
-                <div className='w-1/2 flex flex-col gap-2 bg-[#F1FEFF] border-dashed border-2 items-center justify-center h-[400px]'>
-                    <img
-                        src="/assets/youtube.png"
-                        className='w-[150px] h-[100px]'
-                        alt="img"
-                    />
-                    <div className='flex flex-col items-center justify-center gap-3'>
-                        <label className='text-[#6B6A6A] font-medium'>Add YouTube Video URL</label>
-                        <TextField
-                            value={lectureVideoLink}
-                            onChange={(e) => setlectureVideoLink(e.target.value)}
-                            type="url"
-                            fullWidth
-                            required
-                            id="filled-basic"
-                            placeholder="Insert Link"
-                            size="small"
-                            sx={{
-                                marginBottom: '16px',
-                                padding: "5px",
-                                width: "300px",
-                                background: "#F7F7FC",
-                            }}
-                        />
-                        <Button
-                            type="submit"
-
-                            sx={{
-                                background: "#09C1E0",
-                                width: "300px",
-                                height: "30px",
-                                display: "flex",
-                                alignItems: "center",
-                                color: "#fff",
-                                "&:hover": {
-                                    backgroundColor: "#09C1E0"
-                                }
-                            }}
-                        >
-                            Add
-                        </Button>
-                    </div>
-                </div>
-            )}
-
-            {selectedOption === 'pdf' && (
-                <div className='w-1/2 flex flex-col gap-2 bg-[#F1FEFF] border-dashed border-2 items-center justify-center h-[400px]'>
-                    <label className='text-[#6B6A6A] font-medium'>Upload PDF File</label>
-                    <input
-                        type="file"
-                        accept="application/pdf"
-                        onChange={handleFileUpload}
-                        className='mt-2'
-                        required
-                    />
-                    {pdfFile && <p>{pdfFile.name}</p>}
-                    <Button
-                        type="submit"
-                        sx={{
-                            background: "#09C1E0",
-                            width: "300px",
-                            height: "30px",
-                            display: "flex",
-                            alignItems: "center",
-                            color: "#fff",
-                            marginTop: "20px",
-                            "&:hover": {
-                                backgroundColor: "#09C1E0"
-                            }
-                        }}
-                    >
-                        Upload and Add
-                    </Button>
-                </div>
-            )}
-            {selectedOption === 'exam' && (
-                <div className='w-1/2 flex flex-col gap-2 bg-[#F1FEFF] border-dashed border-2 items-center justify-center h-[400px]'>
-                    <label className='text-[#6B6A6A] font-medium'>Add Exam Link (e.g., Google Form)</label>
-                    <TextField
-                        value={lectureExamLink}
-                        onChange={(e) => setLectureExamLink(e.target.value)}
-                        type="url"
-                        fullWidth
-                        required
-                        placeholder="Insert Exam Link"
-                        size="small"
-                        sx={{
-                            marginBottom: '16px',
-                            padding: "5px",
-                            width: "300px",
-                            background: "#F7F7FC",
-                        }}
-                    />
-                    <Button
-                        type="submit"
-                        sx={{
-                            background: "#09C1E0",
-                            width: "300px",
-                            height: "30px",
-                            color: "#fff",
-                            "&:hover": {
-                                backgroundColor: "#09C1E0"
-                            }
-                        }}
-                    >
-                        Add Exam Link
-                    </Button>
-                </div>
-            )}
-
-            <div className='w-1/2 flex flex-col gap-6'>
-                <TextField
-                    value={lectureName}
-                    onChange={(e) => setLectureName(e.target.value)}
-                    type="text"
-                    required
-                    variant="standard"
-                    sx={{
-                        width: "100%"
-                    }}
-                    placeholder='Lecture Title'
-                />
-                <TextField
-                    value={lectureDescription}
-                    onChange={(e) => setLectureDescription(e.target.value)}
-                    type="text"
-                    variant="standard"
-                    sx={{
-                        width: "100%"
-                    }}
-                    placeholder='Lecture Description'
-                    required
-                />
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">Select Content Type</FormLabel>
-                    <RadioGroup
-                        aria-label="content-type"
-                        name="content-type"
-                        value={selectedOption}
-                        onChange={handleOptionChange}
-                        row
-                    >
-                        <FormControlLabel value="video" control={<Radio />} label="YouTube Video" />
-                        <FormControlLabel value="pdf" control={<Radio />} label="PDF File" />
-                        <FormControlLabel value="exam" control={<Radio />} label="Exam Link" />
-
-                    </RadioGroup>
-                </FormControl>
-            </div>
+        <form onSubmit={handleSubmit}>
+            <TextField
+                label="Lecture Name"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={lectureName}
+                onChange={(e) => setLectureName(e.target.value)}
+                required
+            />
+            <TextField
+                label="Lecture Description"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={lectureDescription}
+                onChange={(e) => setLectureDescription(e.target.value)}
+                required
+            />
+            <TextField
+                label="Video Link"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={lectureVideoLink}
+                onChange={(e) => setLectureVideoLink(e.target.value)}
+            />
+            <TextField
+                label="File Link"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={lectureFileLink}
+                onChange={(e) => setLectureFileLink(e.target.value)}
+            />
+            <TextField
+                label="Exam Link"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={lectureExamLink}
+                onChange={(e) => setLectureExamLink(e.target.value)}
+            />
+            <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
+                Add Lecture
+            </Button>
         </form>
     );
 };

@@ -159,6 +159,7 @@ const coursesView = ({ courses, getAllCourses }) => {
     }, [searchQuery, statusFilter, universityFilter, collegeFilter, classFilter, courses])
 
 
+    
     return (
         <div className='flex flex-col gap-4'>
             <div className='flex items-center justify-between'>

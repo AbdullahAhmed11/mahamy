@@ -6,6 +6,7 @@ import { Button } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const LoginForm = () => {
     const [adminEmail, setAdminEmail] = useState('');
@@ -44,7 +45,9 @@ const LoginForm = () => {
                     toast.error('Login failed. Email or Password is not correct.');
                 } else {
                     // Save the adminId to localStorage
+                    Cookies.set('adminId', adminId);
                     localStorage.setItem('adminId', adminId);
+                    localStorage.setItem('adminPermissions', JSON.stringify(res.data.permissionId));
                     toast.success('Login successful! Redirecting...');
                     // Redirect to the dashboard or home page
                     router.push('/');

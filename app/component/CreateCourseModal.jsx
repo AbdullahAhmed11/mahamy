@@ -130,13 +130,29 @@ const CreateCourseModal = ({ isModalCreateOpen, handleCloseCreateModal }) => {
             console.log(error)
         }
     }
+    const clearFields = () => {
+        setCourseName('');
+        setCourseDescription('');
+        setCoursePrice('');
+        setCourseImage(null);
+        setUnversityId();
+        setCollageId('');
+        setClassId('');
+        setCourseInfo(null);
+        setCourseId(null);
+    };
 
 
+    const handleModalClose = () => {
+        handleCloseCreateModal();
+        setStep(1);
+        clearFields()
+    };
 
     return (
         <Modal
             open={isModalCreateOpen}
-            onClose={handleCloseCreateModal}
+            onClose={handleModalClose}
             onExited={handleExited}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
