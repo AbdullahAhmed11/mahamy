@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import { createLesson, getCourseById, deleteMonth } from '@/actions/courses';
 import InsertLecture from './InsertLecture';
 
-const AddNewMonth = ({openModal, handleModalClose, courseId, onLessonAdded, onLectureAdded }) => {
+const AddNewMonth = ({ openModal, handleModalClose, courseId, onLessonAdded, onLectureAdded }) => {
     const [step, setStep] = useState(1);
 
     const [lessonName, setLessonName] = useState("")
@@ -17,8 +17,8 @@ const AddNewMonth = ({openModal, handleModalClose, courseId, onLessonAdded, onLe
     const [lecData, setLecData] = useState(null)
     const handleNext = () => {
         setStep((prevStep) => prevStep + 1);
-      };
-  
+    };
+
 
     const handleLessonSubmit = async (e) => {
         e.preventDefault();
@@ -29,20 +29,32 @@ const AddNewMonth = ({openModal, handleModalClose, courseId, onLessonAdded, onLe
             const courseData = await getCourseById(courseId);
             setLecData(courseData)
             handleNext()
-                // Notify parent component that a new lesson was added
-                if (onLessonAdded) onLessonAdded();
+            // Notify parent component that a new lesson was added
+            if (onLessonAdded) onLessonAdded();
 
-        }catch(error) {
+        } catch (error) {
             console.log(error)
         }
     }
 
 
-  return (
-    <>
+    const clearFields = () => {
+        setLessonName('');
+        setLessonDescription('');
+        setGetLesson(null);
+    };
+
+    const handleModalClosee = () => {
+        handleModalClose();
+        setStep(1);
+        clearFields()
+    };
+
+    return (
+        <>
             <Modal
                 open={openModal}
-                onClose={handleModalClose}
+                onClose={handleModalClosee}
                 aria-labelledby="modal-title"
                 aria-describedby="modal-description"
             >
@@ -61,68 +73,68 @@ const AddNewMonth = ({openModal, handleModalClose, courseId, onLessonAdded, onLe
                 >
                     {
                         step === 1 && (
-                        <div className=' mt-[50px] flex gap-3 flex-col items-center justify-center'>
-                            <img
-                                src="/assets/Icontwo.png"
-                                className='w-[100px] h-[100px]'                   
-                                alt='cover'
-                            />
-                            <p className='text-[#929292] text-[20px] font-medium'>You must add the first Month in order to be able to add content</p>
-                        
-                            <form className='flex flex-col gap-2 items-center' onSubmit={handleLessonSubmit}> 
-                            <TextField
-                            required
-                                    value={lessonName}
-                                    onChange={(e) => setLessonName(e.target.value)}
-                                    type="text"
-                                    variant="standard"
-                                    sx={{
-                                    width: "100%"
-                                    }}
-                                    placeholder='lesson Name'
-                            />
-                            <TextField
-                            required
-                                    value={lessonDescription}
-                                    onChange={(e) => setLessonDescription(e.target.value)}
-                                    type="text"
-                                    variant="standard"
-                                    sx={{
-                                    width: "100%"
-                                    }}
-                                    placeholder='lesson Description'
-                            />
-                            <Button
-                            type='submit'
-                            //   onClick={handleCloseCreateModal}
-                                sx={{
-                                    padding: "8px",
-                                    background:"#004353",
-                                    color: "#fff",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    width: "300px",
-                                    "&:hover": {
-                                        backgroundColor: "#004353"
-                                    }
-                                }}
-                            >
-                                + New Month
-                            </Button>
-                            </form>
-                        </div>
+                            <div className=' mt-[50px] flex gap-3 flex-col items-center justify-center'>
+                                <img
+                                    src="/assets/Icontwo.png"
+                                    className='w-[100px] h-[100px]'
+                                    alt='cover'
+                                />
+                                <p className='text-[#929292] text-[20px] font-medium'>You must add the first Month in order to be able to add content</p>
+
+                                <form className='flex flex-col gap-2 items-center' onSubmit={handleLessonSubmit}>
+                                    <TextField
+                                        required
+                                        value={lessonName}
+                                        onChange={(e) => setLessonName(e.target.value)}
+                                        type="text"
+                                        variant="standard"
+                                        sx={{
+                                            width: "100%"
+                                        }}
+                                        placeholder='lesson Name'
+                                    />
+                                    <TextField
+                                        required
+                                        value={lessonDescription}
+                                        onChange={(e) => setLessonDescription(e.target.value)}
+                                        type="text"
+                                        variant="standard"
+                                        sx={{
+                                            width: "100%"
+                                        }}
+                                        placeholder='lesson Description'
+                                    />
+                                    <Button
+                                        type='submit'
+                                        //   onClick={handleCloseCreateModal}
+                                        sx={{
+                                            padding: "8px",
+                                            background: "#004353",
+                                            color: "#fff",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            width: "300px",
+                                            "&:hover": {
+                                                backgroundColor: "#004353"
+                                            }
+                                        }}
+                                    >
+                                        + New Month
+                                    </Button>
+                                </form>
+                            </div>
                         )
                     }
                     {
                         step === 2 && (
-                            <InsertLecture lessonId={getLesson} handleCloseCreateModal={handleModalClose} onLectureAdded={onLectureAdded} />
+                            <InsertLecture lessonId={getLesson} handleCloseCreateModal={handleModalClose} onLectureAdded={onLectureAdded} setStep={setStep} />
                         )
                     }
                 </Box>
             </Modal>
         </>
-  )
+    )
 }
 
 export default AddNewMonth
