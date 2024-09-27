@@ -59,8 +59,8 @@ const Sidebar = () => {
         },
         {
             icon: <BsYoutube className='text-[#B3B3B7] w-[22px] h-[22px]  ' />,
-            title: "ny Courses",
-            href: "/nycourses",
+            title: "my Courses",
+            href: "/mycourses",
             alwaysVisible: true,
         },
     ]
