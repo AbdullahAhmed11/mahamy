@@ -55,12 +55,12 @@ const Sidebar = () => {
             icon: <BsCheckSquareFill className='text-[#B3B3B7] w-[22px] h-[22px]  ' />,
             title: "Entities",
             href: "/entities",
+            alwaysVisible: true,
         },
         {
             icon: <BsYoutube className='text-[#B3B3B7] w-[22px] h-[22px]  ' />,
             title: "ny Courses",
             href: "/nycourses",
-            permission: 3,
             alwaysVisible: true,
         },
     ]
