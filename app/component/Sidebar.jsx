@@ -9,9 +9,12 @@ import { BsCheckSquareFill } from "react-icons/bs";
 import { FaPersonShelter } from "react-icons/fa6";
 import Link from 'next/link';
 import { BiLogOutCircle } from "react-icons/bi";
+import { useRouter } from 'next/navigation';
+
 const Sidebar = () => {
 
     const [permissions, setPermissions] = useState([]);
+    const router = useRouter(); // Initialize the router
 
     // Load permissions from local storage or context when the component mounts
     useEffect(() => {
@@ -67,7 +70,12 @@ const Sidebar = () => {
 
     // const filteredLinks = linksData.filter(link => permissions.includes(link.permission));
     const filteredLinks = linksData.filter(link => link.alwaysVisible || permissions.includes(link.permission));
-
+    const handleLogout = () => {
+        // Clear local storage
+        localStorage.clear();
+        // Redirect to login page
+        router.push('/login');
+    };
     return (
         <div className='flex min-h-screen'>
             <div className='w-[100px]   bg-white shadow-md  flex flex-col justify-between'>
@@ -87,8 +95,10 @@ const Sidebar = () => {
                 </div>
                 <div>
                     <div
-                        className='w-full h-[60px] flex flex-col gap-1 items-center justify-center ' >
-                        <span><BiLogOutCircle className=' text-[#FF5B5B] w-[32px] h-[32px] ' /></span>
+                        className='w-full h-[60px] flex flex-col gap-1 items-center justify-center'
+                        onClick={handleLogout} // Attach the logout handler
+                    >
+                        <span><BiLogOutCircle className='text-[#FF5B5B] w-[32px] h-[32px]' /></span>
                         <p className='font-bold text-[#FF5B5B] text-[12px]'>Logout</p>
                     </div>
                 </div>

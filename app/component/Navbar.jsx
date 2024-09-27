@@ -107,7 +107,7 @@ const Navbar = () => {
                         className=" rounded-full"
                     />
                     <div className='flex flex-col '>
-                        <h2 className="font-medium text-[18px]">Abdullah Ahmed</h2>
+                        <h2 className="font-medium text-[18px]">hello</h2>
                         <p className='text-[#858182] text-[16px] font-light	'>Admin</p>
                     </div>
                 </div>
