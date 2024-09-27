@@ -392,11 +392,11 @@ const coursesView = ({ courses, getAllCourses }) => {
                 handleModalClose={handleModalClose}
                 selectedCourseId={selectedCourseId?.courseId}
             />
-            <AddToStudentModal
+            {/* <AddToStudentModal
                 openModal={openAddStudentTo}
                 handleModalClose={handleAddStudentModalClose}
                 selectedCourseId={selectedCourseId?.courseId}
-            />
+            /> */}
             <EditCourse
                 selectedCourseId={selectedCourseId}
                 openModal={openEditModal}
