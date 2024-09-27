@@ -159,7 +159,7 @@ const coursesView = ({ courses, getAllCourses }) => {
     }, [searchQuery, statusFilter, universityFilter, collegeFilter, classFilter, courses])
 
 
-    
+
     return (
         <div className='flex flex-col gap-4'>
             <div className='flex items-center justify-between'>
@@ -236,7 +236,6 @@ const coursesView = ({ courses, getAllCourses }) => {
                             </Select>
                         </FormControl>
                     </Box>
-
 
                     <Box sx={{ width: 170, height: "40px", display: "flex", alignItems: "center", gap: "3px" }}>
                         <p>University: </p>
@@ -331,6 +330,9 @@ const coursesView = ({ courses, getAllCourses }) => {
                                 class
                             </th>
                             <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
+                                ID
+                            </th>
+                            <th scope="col" className="text-[20px] font-medium text-[#09003F] px-6 py-4">
                                 Actions
                             </th>
                         </tr>
@@ -345,6 +347,7 @@ const coursesView = ({ courses, getAllCourses }) => {
                                 <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {course.unversityName}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {course.collageName}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {course.className}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {course.courseId}</td>
                                 <td>
                                     <div>
                                         <button onClick={(event) => handleClick(event, course)}>
