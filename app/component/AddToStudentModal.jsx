@@ -1,56 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import { TextField, IconButton, InputAdornment } from '@mui/material';
-import { IoIosSearch } from "react-icons/io";
-import axios from 'axios';
+import { TextField } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { insertStudentToCourse } from '@/actions/courses';
-const AddToStudentModal = ({ openModal, handleModalClose, selectedCourseId }) => {
-    const [isAdding, setisAddeing] = useState(false);
+import axios from 'axios';
 
-    const [searchTerm, setSearchTerm] = useState('');
-    const [studentID, setStudentID] = useState(null);
-    const handleSearch = async () => {
+const AddToStudentModal = ({ openModal, handleModalClose, selectedStudent }) => {
+    const [studentId, setStudentId] = useState(selectedStudent?.studentId); // Student ID from selected student
+    const [courseId, setCourseId] = useState(''); // Initialize courseId as empty string
+
+    const handleConfirm = async (e) => {
+        e.preventDefault(); // Prevent default form submission
+
         try {
-            const body = {
-                studentName: searchTerm // Send the search term to the API
-            };
-
-            const response = await axios.post("https://mhamcourses-001-site1.atempurl.com/api/Student/Select/All/Student/1/40", body, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+            const response = await axios.post('https://mhamcourses-001-site1.atempurl.com/api/Student/Insert/Student/In/Course', {
+                studentId: selectedStudent?.studentId, // Ensure studentId is sent as an integer
+                courseId: parseInt(courseId, 10) // Convert courseId to integer
             });
 
-            console.log(response.data.students[0].studentId, "res")
-            setStudentID(response.data.students[0].studentId)
+            // Handle successful response
+
+            toast.success('Student added to course successfully!');
+            handleModalClose(); // Close the modal after success
+
         } catch (error) {
-            console.error("Error fetching student:", error);
-        }
-    };
-
-    const handleConfirm = async () => {
-        if (studentID && selectedCourseId) {
-            setisAddeing(true);
-            try {
-                const result = await insertStudentToCourse(studentID, selectedCourseId);
-                toast.success("Student Added successfully!");
-
-                console.log("Student successfully added to course:", result);
-                handleModalClose(); // Close the modal after successful operation
-            } catch (error) {
-                toast.error("Failed to Student Added.", {
-                    className: 'custom-toast-error', // Apply the custom class here
-                });
-                console.error("Error adding student to course:", error);
-            } finally {
-                setisAddeing(false);
+            // Handle error response
+            if (error.response) {
+                // If the error response exists, display the error message
+                toast.error(error.response.data.message || 'Failed to add student to course');
+            } else {
+                toast.error('An error occurred. Please try again.');
             }
-        } else {
-            console.error("Student ID or Course ID is missing.");
         }
     };
 
@@ -72,32 +54,14 @@ const AddToStudentModal = ({ openModal, handleModalClose, selectedCourseId }) =>
                         bgcolor: 'background.paper',
                         boxShadow: 24,
                         p: 4,
-                        border: "2px solid ##ED2121"
+                        border: "2px solid #ED2121"
                     }}
                 >
                     <div className='flex flex-col gap-3 items-center justify-center'>
-                        <h2 className='font-bold text-[30px] text-[#000]'> Add To Course</h2>
+                        <h2 className='font-bold text-[30px] text-[#000]'>Add To Course</h2>
                         <p className='text-[#8C959F] font-normal text-[20px]'>Add student to Course</p>
                     </div>
                     <form className='flex flex-col gap-10 mt-6' onSubmit={handleConfirm}>
-                        <div>
-                            <TextField
-                                label="Search Student"
-                                fullWidth
-                                variant="outlined"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton onClick={handleSearch}>
-                                                <IoIosSearch />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                        </div>
                         <div>
                             <TextField
                                 type="text"
@@ -105,13 +69,15 @@ const AddToStudentModal = ({ openModal, handleModalClose, selectedCourseId }) =>
                                 sx={{
                                     width: "100%"
                                 }}
-                                placeholder='Course Name'
+                                value={courseId}
+                                onChange={(e) => setCourseId(e.target.value)} // Capture course ID input
+                                placeholder='Enter Course ID' // Placeholder indicating the expected input
                             />
                         </div>
 
                         <div className='flex gap-5 items-center justify-center'>
                             <Button
-                                type="submit"
+                                type="button" // Change type to "button" for the Cancel button
                                 sx={{
                                     width: "150px",
                                     height: "45px",
@@ -121,12 +87,11 @@ const AddToStudentModal = ({ openModal, handleModalClose, selectedCourseId }) =>
                                     borderColor: "#4834D4",
                                     border: "2px solid #4834D4"
                                 }}
+                                onClick={handleModalClose} // Close modal on cancel
                             >
                                 Cancel
                             </Button>
                             <Button
-                                // onClick={handleConfirm}
-                                disabled={isAdding}
                                 type="submit"
                                 sx={{
                                     width: "150px",
@@ -136,8 +101,7 @@ const AddToStudentModal = ({ openModal, handleModalClose, selectedCourseId }) =>
                                     color: "#fff",
                                 }}
                             >
-                                {isAdding ? "Confirming..." : "confirm"}
-
+                                Confirm
                             </Button>
                         </div>
                     </form>
@@ -145,7 +109,7 @@ const AddToStudentModal = ({ openModal, handleModalClose, selectedCourseId }) =>
             </Modal>
             <ToastContainer />
         </>
-    )
-}
+    );
+};
 
-export default AddToStudentModal
+export default AddToStudentModal;
