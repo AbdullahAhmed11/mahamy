@@ -41,6 +41,7 @@ const studentsView = ({ students, getAllStudents }) => {
 
     useEffect(() => {
         getAllStudents()
+        console.log(students, "students")
     }, [])
 
     const handleClick = (event, studentId) => {
@@ -61,7 +62,7 @@ const studentsView = ({ students, getAllStudents }) => {
         setOpenModal(false);
     };
 
- 
+
     //create
     const handleCreateOpenModal = () => {
         setIsModalCreateOpen(true);
@@ -404,8 +405,8 @@ const studentsView = ({ students, getAllStudents }) => {
                                                 <MenuItem onClick={handleEditModal}><span className='text-[#B3B3B7] flex items-center gap-2'> <LiaEdit /> Edit Student</span></MenuItem>
                                                 <MenuItem onClick={handledeleteModal}><span className='text-[#FF5B5B] flex items-center gap-2'><MdOutlineDelete />Delete</span></MenuItem>
                                                 <MenuItem onClick={handleAddStudentModal}>
-                                                <span className=' flex items-center gap-2'> <IoIosAddCircleOutline /> Add to course </span>
-                                            </MenuItem>
+                                                    <span className=' flex items-center gap-2'> <IoIosAddCircleOutline /> Add to course </span>
+                                                </MenuItem>
                                             </Menu>
                                         </div>
                                     </td>
@@ -435,11 +436,11 @@ const studentsView = ({ students, getAllStudents }) => {
                 selectedStudent={selectedStudentId}
             />
             <AddToStudentModal
-    openModal={openAddStudentTo}
-    handleModalClose={handleAddStudentModalClose}
-    selectedStudent={selectedStudentId}
+                openModal={openAddStudentTo}
+                handleModalClose={handleAddStudentModalClose}
+                selectedStudent={selectedStudentId}
 
-    />
+            />
             <StudentProfile
                 toggleDrawer={toggleDrawer}
                 openDrawer={openDrawer}

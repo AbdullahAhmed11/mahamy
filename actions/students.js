@@ -13,7 +13,8 @@ export async function getAllStudents() {
         };
 
         const res = await axios.post(
-            "https://mhamcourses-001-site1.atempurl.com/api/Student/Select/All/Student/1/40", {},
+            "https://mhamcourses-001-site1.atempurl.com/api/Student/Select/All/Student/1/300",
+            {},
             payload,
             { headers: headers }
         );
