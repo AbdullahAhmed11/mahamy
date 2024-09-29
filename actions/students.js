@@ -18,7 +18,7 @@ export async function getAllStudents() {
             payload,
             { headers: headers }
         );
-
+        revalidatePath('/students')
         console.log(res.data.students); // Log the response data
         return res.data.students; // Return the student data from the response
     } catch (error) {
