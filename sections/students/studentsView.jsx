@@ -41,7 +41,6 @@ const studentsView = ({ students, getAllStudents }) => {
 
     useEffect(() => {
         getAllStudents()
-        console.log(students, "students")
     }, [])
 
     const handleClick = (event, studentId) => {

@@ -16,11 +16,17 @@ import { AiTwotoneMail } from "react-icons/ai";
 import { FiPhone } from "react-icons/fi";
 import { MdOutlineImportantDevices } from "react-icons/md";
 
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
-const StudentProfile = ({toggleDrawer, openDrawer, dataProfile}) => {
-
+const StudentProfile = ({ toggleDrawer, openDrawer, dataProfile, studentCourses }) => {
     const DrawerList = (
-           <Box sx={{ width: 350 }} role="presentation" onClick={toggleDrawer(false)}>
+        <Box sx={{ width: 350 }} role="presentation" onClick={toggleDrawer(false)}>
             <div className="flex flex-col p-4 gap-5">
                 <div onClick={toggleDrawer(false)} className="flex items-center gap-2 cursor-pointer" >
                     <p className="font-medium text-[#2C0076] text-[14px]">Swipe back</p>
@@ -34,9 +40,9 @@ const StudentProfile = ({toggleDrawer, openDrawer, dataProfile}) => {
                     <h2 className="font-medium text-[15px] ">{dataProfile?.studentName}</h2>
                     <div className='flex items-center gap-2'>
                         <p className='text-[14px] text-[#2C2C2C] font-normal'>{dataProfile?.unversityName}</p>
-                        <div  className='h-[15px] w-[2px] bg-[#2C2C2C]'></div>
+                        <div className='h-[15px] w-[2px] bg-[#2C2C2C]'></div>
                         <p className='text-[14px] text-[#2C2C2C] font-normal'>{dataProfile?.collageName}</p>
-                        <div  className='h-[15px] w-[2px] bg-[#2C2C2C]'></div>
+                        <div className='h-[15px] w-[2px] bg-[#2C2C2C]'></div>
                         <p className='text-[14px] text-[#2C2C2C] font-normal'>{dataProfile?.className}</p>
                     </div>
                 </div>
@@ -81,19 +87,58 @@ const StudentProfile = ({toggleDrawer, openDrawer, dataProfile}) => {
             </div>
             <div className="p-4">
                 <h2 className="font-medium text-[20px] ">Subscribed Courses</h2>
+
+                <TableContainer component={Paper}>
+                    <Table aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell
+                                    sx={{
+                                        fontWeight: "bold",
+                                        fontSize: "18px",
+                                        color: "#000"
+                                    }}
+                                >course name</TableCell>
+                                <TableCell
+                                    sx={{
+                                        fontWeight: "bold",
+                                        fontSize: "18px",
+                                        color: "#000"
+                                    }}
+                                    align="right">status</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {
+                                studentCourses?.map((course) => (
+                                    <TableRow
+                                        key={course.courseId}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                        <TableCell component="th" scope="row">
+                                            {course.courseName}
+                                        </TableCell>
+                                        <TableCell align="right">active</TableCell>
+
+                                    </TableRow>
+                                ))
+                            }
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </div>
 
         </Box>
-      );
+    );
 
-  return (
-<div>
-      <Drawer       anchor="right"
- open={openDrawer} onClose={toggleDrawer(false)}>
-        {DrawerList}
-      </Drawer>
-    </div>
-  )
+    return (
+        <div>
+            <Drawer anchor="right"
+                open={openDrawer} onClose={toggleDrawer(false)}>
+                {DrawerList}
+            </Drawer>
+        </div>
+    )
 }
 
 export default StudentProfile
