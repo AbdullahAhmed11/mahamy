@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import { updateStudent } from '@/actions/students';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Select, MenuItem } from '@mui/material';
 
 const EditStudentModal = ({ openModal, handleModalClose, selectedStudent }) => {
     const [isUpdating, setIsUpdating] = useState(false);
@@ -17,6 +18,7 @@ const EditStudentModal = ({ openModal, handleModalClose, selectedStudent }) => {
     const [UnversityId, setUnversityId] = useState('');
     const [CollageId, setCollageId] = useState('');
     const [ClassId, setClassId] = useState('');
+    const [StudentActivation, setStudentActivation] = useState(false); // New state for activation
 
     // Populate form fields with selectedStudent's data
     useEffect(() => {
@@ -28,6 +30,7 @@ const EditStudentModal = ({ openModal, handleModalClose, selectedStudent }) => {
             setUnversityId(selectedStudent.unversityId || '');
             setCollageId(selectedStudent.collageId || '');
             setClassId(selectedStudent.classId || '');
+            setStudentActivation(selectedStudent.StudentActivation || '')
         }
     }, [selectedStudent]);
 
@@ -50,6 +53,7 @@ const EditStudentModal = ({ openModal, handleModalClose, selectedStudent }) => {
         appendIfChanged(formData, 'unversityId', UnversityId, selectedStudent.unversityId);
         appendIfChanged(formData, 'collageId', CollageId, selectedStudent.collageId);
         appendIfChanged(formData, 'classId', ClassId, selectedStudent.classId);
+        appendIfChanged(formData, 'StudentActivation', StudentActivation, selectedStudent.StudentActivation);
 
         setIsUpdating(true);
         try {
@@ -147,6 +151,17 @@ const EditStudentModal = ({ openModal, handleModalClose, selectedStudent }) => {
                             value={StudentPhone}
                             onChange={(e) => setStudentPhone(e.target.value)}
                         />
+                        <div>
+                            <Select
+                                value={StudentActivation}
+                                onChange={(e) => setStudentActivation(e.target.value)}  // No need for boolean conversion
+                                variant="standard"
+                                fullWidth
+                            >
+                                <MenuItem value={true}>True</MenuItem>
+                                <MenuItem value={false}>False</MenuItem>
+                            </Select>
+                        </div>
                         <div className="flex items-center justify-center">
                             <Button
                                 type="submit"
