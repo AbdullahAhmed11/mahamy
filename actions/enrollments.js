@@ -20,6 +20,7 @@ export async function ferchEnrollments() {
         );
 
         console.log(res.data);
+        revalidatePath("/enrollments")
         return res.data;
     } catch (error) {
         console.error('Error fetching data:', error);
