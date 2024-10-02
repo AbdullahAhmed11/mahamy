@@ -28,6 +28,8 @@ import AddToStudentModal from '@/app/component/AddToStudentModal';
 import { fetchStudentProfile, getStudentCourses } from '@/actions/students';
 import StudentProfile from '@/app/component/StudentProfile';
 import axios from "axios"
+import Pagination from '@mui/material/Pagination';
+import TablePagination from '@mui/material/TablePagination';
 
 const studentsView = ({ students, getAllStudents }) => {
 
@@ -150,6 +152,8 @@ const studentsView = ({ students, getAllStudents }) => {
     const [universityFilter, setUniversityFilter] = useState('all');  // New state for university filter
     const [collegeFilter, setCollegeFilter] = useState('all');
     const [classFilter, setClassFilter] = useState('all')
+    const [page, setPage] = useState(1); // Pagination: Current page
+    const [rowsPerPage] = useState(10); // Pagination: Rows per page set to 10
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
@@ -189,6 +193,13 @@ const studentsView = ({ students, getAllStudents }) => {
 
         setFilteredStudents(filtered);
     }, [searchQuery, statusFilter, universityFilter, collegeFilter, classFilter, students]);
+
+
+    // Handle page change
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+    const paginatedStudents = filteredStudents.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
     return (
         <div className='flex flex-col gap-4'>
@@ -352,7 +363,7 @@ const studentsView = ({ students, getAllStudents }) => {
                     <tbody>
 
                         {
-                            filteredStudents.map((student) => (
+                            paginatedStudents.map((student) => (
                                 <tr key={student.studentId}>
                                     <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]">{student.studentName}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-[16px] font-medium text-[#7D7D7D]"> {student.studentEmail}</td>
@@ -416,6 +427,17 @@ const studentsView = ({ students, getAllStudents }) => {
                     </tbody>
                 </table>
                 <div>
+                </div>
+
+                <div className='flex justify-center items-center mt-4'>
+                    <Pagination
+                        count={Math.ceil(filteredStudents.length / rowsPerPage)}
+                        page={page}
+                        onChange={handleChangePage}
+                        color="primary"
+                        shape="rounded"
+                        size="large"
+                    />
                 </div>
             </div>
 
